@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Khushang Zaveri — AI/ML Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f7f7f5;
+    --surface2: #efede8;
+    --border: #e8e6e0;
+    --text: #1a1a1a;
+    --muted: #9b9a97;
+    --accent: #2f7df6;
+    --accent-green: #0f9d58;
+    --accent-orange: #d97706;
+    --tag-bg: #f1f0ec;
+    --sidebar: #fbfaf8;
+    --sidebar-width: 240px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar-width);
+    background: var(--sidebar);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 0;
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .sidebar-profile {
+    padding: 0 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1rem;
+  }
+
+  .avatar {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #2f7df6, #06b6d4);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lora', serif;
+    font-size: 1.3rem;
+    color: white;
+    margin-bottom: 0.75rem;
+    font-style: italic;
+  }
+
+  .sidebar-name {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 0.15rem;
+  }
+
+  .sidebar-role {
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .sidebar-nav { flex: 1; padding: 0 0.5rem; }
+
+  .nav-section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.5rem 0.75rem 0.25rem;
+    margin-top: 0.5rem;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.825rem;
+    color: #555;
+    text-decoration: none;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+
+  .nav-item:hover, .nav-item.active {
+    background: var(--surface2);
+    color: var(--text);
+  }
+
+  .nav-icon { font-size: 0.9rem; width: 1.1rem; text-align: center; }
+
+  .sidebar-footer {
+    padding: 1rem 1.25rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .availability-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.72rem;
+    color: #166534;
+    font-weight: 500;
+  }
+
+  .dot {
+    width: 6px; height: 6px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    max-width: 860px;
+    padding: 4rem 5rem;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    margin-bottom: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-cover {
+    height: 140px;
+    background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 40%, #dcfce7 100%);
+    border-radius: 12px;
+    margin-bottom: -2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232f7df6' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .hero-avatar {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, #2f7df6, #06b6d4);
+    border-radius: 14px;
+    border: 4px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lora', serif;
+    font-size: 1.8rem;
+    color: white;
+    font-style: italic;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 16px rgba(47,125,246,0.2);
+  }
+
+  .hero-name {
+    font-family: 'Lora', serif;
+    font-size: 2.25rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-tagline {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
+  }
+
+  .hero-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.75rem;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 0.78rem;
+    color: #555;
+    font-weight: 400;
+  }
+
+  .chip-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+  }
+
+  .hero-links {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    border-radius: 7px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .hero-link-primary {
+    background: var(--accent);
+    color: white;
+  }
+
+  .hero-link-primary:hover { background: #1a6de0; }
+
+  .hero-link-secondary {
+    background: var(--tag-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .hero-link-secondary:hover { background: var(--surface2); }
+
+  /* ── STATS ROW ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 3.5rem;
+  }
+
+  .stat-box {
+    background: var(--surface);
+    padding: 1.25rem 1.5rem;
+    text-align: center;
+  }
+
+  .stat-val {
+    font-family: 'Lora', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+
+  .stat-lbl {
+    font-size: 0.7rem;
+    color: var(--muted);
+    line-height: 1.3;
+  }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 3.5rem; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-icon { font-size: 1.1rem; }
+
+  .section-title {
+    font-family: 'Lora', serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .section-divider {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    color: #1e40af;
+    line-height: 1.6;
+  }
+
+  .callout-icon { font-size: 1rem; flex-shrink: 0; padding-top: 0.1rem; }
+
+  /* ── EXP CARDS ── */
+  .exp-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    transition: box-shadow 0.2s;
+  }
+
+  .exp-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+
+  .exp-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .exp-card-header:hover { background: var(--surface2); }
+
+  .exp-org-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .org-badge {
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    background: #dbeafe;
+    color: #1d4ed8;
+  }
+
+  .org-badge.green { background: #dcfce7; color: #166534; }
+  .org-badge.orange { background: #fef3c7; color: #92400e; }
+  .org-badge.purple { background: #ede9fe; color: #5b21b6; }
+
+  .exp-title-text {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.925rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .exp-period {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    white-space: nowrap;
+    padding-top: 0.15rem;
+  }
+
+  .exp-card-body {
+    padding: 1.25rem 1.5rem;
+    display: none;
+  }
+
+  .exp-card-body.open { display: block; }
+
+  .exp-card-body ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .exp-card-body li {
+    font-size: 0.865rem;
+    color: #444;
+    padding-left: 1.25rem;
+    position: relative;
+    line-height: 1.65;
+  }
+
+  .exp-card-body li::before {
+    content: '↳';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.75rem;
+  }
+
+  .toggle-arrow {
+    font-size: 0.7rem;
+    color: var(--muted);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+    padding-top: 0.2rem;
+  }
+
+  .toggle-arrow.open { transform: rotate(90deg); }
+
+  /* ── PUBLICATIONS ── */
+  .pub-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 0.75rem;
+    transition: box-shadow 0.2s, background 0.15s;
+    background: white;
+  }
+
+  .pub-card:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    background: var(--surface);
+  }
+
+  .pub-num {
+    font-family: 'Lora', serif;
+    font-size: 1.5rem;
+    color: var(--border);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 2rem;
+    font-style: italic;
+  }
+
+  .pub-venue-tag {
+    display: inline-block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+
+  .venue-blue { background: #dbeafe; color: #1d4ed8; }
+  .venue-purple { background: #ede9fe; color: #5b21b6; }
+  .venue-orange { background: #fef3c7; color: #92400e; }
+
+  .pub-title-text {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.4;
+    margin-bottom: 0.2rem;
+  }
+
+  .pub-note { font-size: 0.78rem; color: var(--muted); }
+
+  /* ── PROJECTS ── */
+  .proj-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .proj-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: box-shadow 0.2s, transform 0.15s;
+    background: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .proj-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), #06b6d4);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .proj-card:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+  }
+
+  .proj-card:hover::before { opacity: 1; }
+
+  .proj-card-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.1rem;
+  }
+
+  .proj-card-title {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.925rem;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .proj-card-desc {
+    font-size: 0.825rem;
+    color: #666;
+    line-height: 1.65;
+    flex: 1;
+  }
+
+  .proj-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tag {
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    color: #666;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+  }
+
+  .proj-link {
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .proj-link:hover { text-decoration: underline; }
+
+  /* ── SKILLS ── */
+  .skills-table {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .skills-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .skills-row:last-child { border-bottom: none; }
+  .skills-row:hover { background: var(--surface); }
+
+  .skills-cat {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    padding: 0.9rem 1.25rem;
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .skills-pills {
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    align-items: center;
+  }
+
+  .skill-pill {
+    background: white;
+    border: 1px solid var(--border);
+    color: #555;
+    font-size: 0.78rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 5px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .skill-pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* ── EDUCATION ── */
+  .edu-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 0.75rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: start;
+    transition: box-shadow 0.2s;
+    background: white;
+  }
+
+  .edu-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+
+  .edu-logo {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .edu-degree {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.925rem;
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+  }
+
+  .edu-school {
+    font-size: 0.825rem;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+  }
+
+  .edu-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+
+  .edu-courses {
+    font-size: 0.8rem;
+    color: #777;
+    line-height: 1.7;
+  }
+
+  /* ── CONTACT ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .contact-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.15s;
+    background: white;
+  }
+
+  .contact-card:hover {
+    border-color: var(--accent);
+    background: #eff6ff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(47,125,246,0.1);
+  }
+
+  .contact-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .contact-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-bottom: 0.1rem;
+  }
+
+  .contact-value {
+    font-size: 0.825rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero { animation: fadeUp 0.5s ease forwards; }
+  .stats-row { animation: fadeUp 0.5s ease 0.1s both; }
+  .section { animation: fadeUp 0.5s ease 0.15s both; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 2rem 1.5rem; }
+    .proj-grid, .contact-grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .skills-row { grid-template-columns: 1fr; }
+    .skills-cat { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-profile">
+    <div class="avatar">K</div>
+    <div class="sidebar-name">Khushang Zaveri</div>
+    <div class="sidebar-role">AI/ML Engineer · MS Data Science<br>Johns Hopkins University</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Overview</div>
+    <a href="#hero" class="nav-item">
+      <span class="nav-icon">🏠</span> Home
+    </a>
+    <a href="#stats" class="nav-item">
+      <span class="nav-icon">📊</span> At a Glance
+    </a>
+
+    <div class="nav-section-label">Background</div>
+    <a href="#experience" class="nav-item">
+      <span class="nav-icon">💼</span> Experience
+    </a>
+    <a href="#publications" class="nav-item">
+      <span class="nav-icon">📄</span> Publications
+    </a>
+    <a href="#education" class="nav-item">
+      <span class="nav-icon">🎓</span> Education
+    </a>
+
+    <div class="nav-section-label">Work</div>
+    <a href="#projects" class="nav-item">
+      <span class="nav-icon">🛠</span> Projects
+    </a>
+    <a href="#skills" class="nav-item">
+      <span class="nav-icon">⚡</span> Skills
+    </a>
+
+    <div class="nav-section-label">Connect</div>
+    <a href="#contact" class="nav-item">
+      <span class="nav-icon">✉️</span> Contact
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="availability-badge">
+      <div class="dot"></div>
+      Available May 2026
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero" id="hero">
+    <div class="hero-cover"></div>
+    <div style="padding-top: 0.5rem;">
+      <div class="hero-avatar">K</div>
+      <h1 class="hero-name">Khushang Zaveri</h1>
+      <p class="hero-tagline">AI/ML Engineer & Researcher · Building intelligent systems at the intersection of<br>medical imaging, privacy-preserving ML, and generative models.</p>
+
+      <div class="hero-chips">
+        <span class="chip"><span class="chip-dot" style="background:#2f7df6"></span>Johns Hopkins CLSP</span>
+        <span class="chip"><span class="chip-dot" style="background:#0f9d58"></span>St. Jude Children's Research Hospital</span>
+        <span class="chip"><span class="chip-dot" style="background:#d97706"></span>NAACL 2025 · COLM 2025</span>
+        <span class="chip"><span class="chip-dot" style="background:#8b5cf6"></span>GPA 3.78 / 4.0</span>
+      </div>
+
+      <div class="hero-links">
+        <a href="mailto:kzaveri1@jh.edu" class="hero-link hero-link-primary">✉ Get in touch</a>
+        <a href="https://github.com/Khushangz" class="hero-link hero-link-secondary" target="_blank">⌥ GitHub</a>
+        <a href="#" class="hero-link hero-link-secondary" target="_blank">in LinkedIn</a>
+        <a href="#" class="hero-link hero-link-secondary" target="_blank">◎ Google Scholar</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row" id="stats">
+    <div class="stat-box">
+      <div class="stat-val">3</div>
+      <div class="stat-lbl">Publications</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">0.89</div>
+      <div class="stat-lbl">mAP@R · FAISS</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">600K+</div>
+      <div class="stat-lbl">X-rays indexed</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val">40%</div>
+      <div class="stat-lbl">AUROC lift · CLSP</div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div class="section" id="experience">
+    <div class="section-header">
+      <span class="section-icon">💼</span>
+      <h2 class="section-title">Experience</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="callout">
+      <span class="callout-icon">💡</span>
+      Currently working across two research-intensive roles — click each to expand details.
+    </div>
+
+    <!-- JHU -->
+    <div class="exp-card">
+      <div class="exp-card-header" onclick="toggleExp(this)">
+        <div>
+          <div class="exp-org-row">
+            <span class="org-badge">Johns Hopkins · CLSP</span>
+          </div>
+          <div class="exp-title-text">Graduate Research Assistant</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <div class="exp-period">Aug 2025 – Present</div>
+          <div class="toggle-arrow">▶</div>
+        </div>
+      </div>
+      <div class="exp-card-body open">
+        <ul>
+          <li>Built the first end-to-end vocal tic detection system (WavLM + CNN-BiLSTM) for real-time inference in Tourette Syndrome patients</li>
+          <li>Designed experiments with SVM, VAD, MMD, LDA to analyze tic-related transitions across intra- and inter-patient splits</li>
+          <li>Improved AUROC by 40% via custom oversampling, JSD-optimized splits, and higher receptive field CNNs for rare event detection</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- St. Jude -->
+    <div class="exp-card">
+      <div class="exp-card-header" onclick="toggleExp(this)">
+        <div>
+          <div class="exp-org-row">
+            <span class="org-badge green">St. Jude Children's Research Hospital</span>
+          </div>
+          <div class="exp-title-text">Software Engineer Intern · AI/ML</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <div class="exp-period">May 2025 – Present</div>
+          <div class="toggle-arrow">▶</div>
+        </div>
+      </div>
+      <div class="exp-card-body">
+        <ul>
+          <li>Trained contrastive copy-detection model; built benchmarking framework evaluating contrastive models for privacy detection</li>
+          <li>Engineered production research codebase: Hydra configs, multi-dataset parsers, dataloaders, training and evaluation pipelines</li>
+          <li>Scaled FAISS-based retrieval pipelines to 600K+ chest X-ray images, achieving SOTA (0.89 mAP@R, 0.9 P@1)</li>
+          <li>Devised patient verification pipeline using Siamese networks, FAISS hard-negative mining, and bootstrapped confidence intervals</li>
+          <li>Applied contrastive embeddings for dataset deduplication, improving DenseNet-121 classification to 0.83 AUROC</li>
+          <li>Developed DDIM inversion pipeline (VAE encoder, U-Net, null-text inversion) to probe identity leakage in synthetic images</li>
+          <li>Performed white-box membership inference on chest X-ray latent diffusion models using timestep-conditioned denoising loss</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- UPenn -->
+    <div class="exp-card">
+      <div class="exp-card-header" onclick="toggleExp(this)">
+        <div>
+          <div class="exp-org-row">
+            <span class="org-badge purple">University of Pennsylvania</span>
+          </div>
+          <div class="exp-title-text">Research Intern · NLP</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <div class="exp-period">Jan 2023 – Jan 2024</div>
+          <div class="toggle-arrow">▶</div>
+        </div>
+      </div>
+      <div class="exp-card-body">
+        <ul>
+          <li>Led creation of the largest cross-cultural dataset from 5,435 movie transcripts to identify harmful social norms</li>
+          <li>Engineered automated web crawler ETL pipeline (BeautifulSoup, SQL) to scrape and preprocess massive unstructured data</li>
+          <li>Applied NLP techniques (LDA, LIWC, agglomerative clustering, prompt engineering) to uncover 10,000 harmful social norms</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Veltris -->
+    <div class="exp-card">
+      <div class="exp-card-header" onclick="toggleExp(this)">
+        <div>
+          <div class="exp-org-row">
+            <span class="org-badge orange">Veltris</span>
+          </div>
+          <div class="exp-title-text">AI Intern</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <div class="exp-period">Jan 2024 – Jul 2024</div>
+          <div class="toggle-arrow">▶</div>
+        </div>
+      </div>
+      <div class="exp-card-body">
+        <ul>
+          <li>Engineered Biomedical NER model; built data pipelines; fine-tuned BERT & RoBERTa, achieving 0.8 Macro F1</li>
+          <li>Mitigated severe class imbalance in biomedical datasets using synthetic data augmentation and batched oversampling</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- KPMG -->
+    <div class="exp-card">
+      <div class="exp-card-header" onclick="toggleExp(this)">
+        <div>
+          <div class="exp-org-row">
+            <span class="org-badge">KPMG</span>
+          </div>
+          <div class="exp-title-text">AI Intern</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <div class="exp-period">Jun 2023 – Aug 2023</div>
+          <div class="toggle-arrow">▶</div>
+        </div>
+      </div>
+      <div class="exp-card-body">
+        <ul>
+          <li>Fine-tuned Flan-T5 and Falcon-7B as GEC models using PEFT to support auditor workflows</li>
+          <li>Researched BASEL IV impact on Indian banks; developed climate-resilient investment strategies using Monte Carlo simulation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PUBLICATIONS -->
+  <div class="section" id="publications">
+    <div class="section-header">
+      <span class="section-icon">📄</span>
+      <h2 class="section-title">Publications</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="pub-card">
+      <div class="pub-num">01</div>
+      <div>
+        <div class="pub-venue-tag venue-blue">NAACL 2025 · Main Conference</div>
+        <div class="pub-title-text">Social Norms in Cinema: A Cross-Cultural Analysis of Shame and Pride</div>
+        <div class="pub-note">Top 15 NLP venue globally</div>
+      </div>
+    </div>
+
+    <div class="pub-card">
+      <div class="pub-num">02</div>
+      <div>
+        <div class="pub-venue-tag venue-purple">COLM 2025 · MELT Workshop</div>
+        <div class="pub-title-text">Social Norms in Cinema (Workshop Track)</div>
+        <div class="pub-note">Extended workshop presentation</div>
+      </div>
+    </div>
+
+    <div class="pub-card">
+      <div class="pub-num">03</div>
+      <div>
+        <div class="pub-venue-tag venue-orange">SIIM Conference · Abstract</div>
+        <div class="pub-title-text">Privacy Preservation in Publicly Available Medical Imaging Datasets</div>
+        <div class="pub-note">Medical imaging privacy research</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section" id="projects">
+    <div class="section-header">
+      <span class="section-icon">🛠</span>
+      <h2 class="section-title">Projects</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="proj-card-icon">🔍</div>
+        <div class="proj-card-title">DevCode — Agentic Semantic Code Search</div>
+        <div class="proj-card-desc">End-to-end RAG system enabling intent-driven code discovery with LLM-based explanations. Tree-sitter AST parsing + Qdrant vector indexing for function-level retrieval.</div>
+        <div class="proj-tags">
+          <span class="tag">FastAPI</span><span class="tag">LangGraph</span><span class="tag">Tree-sitter</span><span class="tag">Qdrant</span><span class="tag">PostgreSQL</span><span class="tag">Ollama</span>
+        </div>
+        <a href="https://github.com/Khushangz/devcode" class="proj-link" target="_blank">↗ View on GitHub</a>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-card-icon">📚</div>
+        <div class="proj-card-title">RAG Multimodal Research Retrieval</div>
+        <div class="proj-card-desc">Multimodal RAG pipeline for scientific paper retrieval using LLaVA for image understanding. Improved mAP by 30% via hypothetical querying and LLM-as-a-judge evaluation.</div>
+        <div class="proj-tags">
+          <span class="tag">FAISS</span><span class="tag">LLaVA</span><span class="tag">LangChain</span><span class="tag">Bedrock</span><span class="tag">BARTScore</span>
+        </div>
+        <a href="https://github.com/Khushangz" class="proj-link" target="_blank">↗ View on GitHub</a>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-card-icon">🩻</div>
+        <div class="proj-card-title">Chest X-Ray Classification Pipeline</div>
+        <div class="proj-card-desc">Multi-dataset DenseNet-121 pipeline combining real MIMIC-CXR with RoentGen-v2 synthetic images. FAISS copy-detection ranks synthetic images by uniqueness for ablation across 8 disease classes.</div>
+        <div class="proj-tags">
+          <span class="tag">DenseNet-121</span><span class="tag">FAISS</span><span class="tag">Hydra</span><span class="tag">MIMIC-CXR</span><span class="tag">PyTorch</span>
+        </div>
+      </div>
+
+      <div class="proj-card">
+        <div class="proj-card-icon">🤖</div>
+        <div class="proj-card-title">RLHF Training Pipeline</div>
+        <div class="proj-card-desc">Full SFT + DPO pipeline using GPT-2, Dolly-15K for supervised fine-tuning, and UltraFeedback for preference optimization. Custom token log-prob computation and gradient management.</div>
+        <div class="proj-tags">
+          <span class="tag">PyTorch</span><span class="tag">TRL</span><span class="tag">DPO</span><span class="tag">GPT-2</span><span class="tag">PEFT</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="section" id="skills">
+    <div class="section-header">
+      <span class="section-icon">⚡</span>
+      <h2 class="section-title">Skills</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="skills-table">
+      <div class="skills-row">
+        <div class="skills-cat">🐍 Languages</div>
+        <div class="skills-pills">
+          <span class="skill-pill">Python</span><span class="skill-pill">SQL</span><span class="skill-pill">R</span><span class="skill-pill">C++</span><span class="skill-pill">Java</span><span class="skill-pill">Bash</span>
+        </div>
+      </div>
+      <div class="skills-row">
+        <div class="skills-cat">👁 Computer Vision</div>
+        <div class="skills-pills">
+          <span class="skill-pill">Stable Diffusion</span><span class="skill-pill">DDIM/DDPM</span><span class="skill-pill">OpenCV</span><span class="skill-pill">Torchvision</span><span class="skill-pill">Albumentations</span>
+        </div>
+      </div>
+      <div class="skills-row">
+        <div class="skills-cat">🧠 ML & DL</div>
+        <div class="skills-pills">
+          <span class="skill-pill">PyTorch</span><span class="skill-pill">TensorFlow</span><span class="skill-pill">Scikit-learn</span><span class="skill-pill">DDP</span><span class="skill-pill">PEFT</span><span class="skill-pill">RLHF</span>
+        </div>
+      </div>
+      <div class="skills-row">
+        <div class="skills-cat">🤝 Agentic & RAG</div>
+        <div class="skills-pills">
+          <span class="skill-pill">LangGraph</span><span class="skill-pill">LangChain</span><span class="skill-pill">FAISS</span><span class="skill-pill">Qdrant</span><span class="skill-pill">Multi-agent</span>
+        </div>
+      </div>
+      <div class="skills-row">
+        <div class="skills-cat">🎤 Speech & Audio</div>
+        <div class="skills-pills">
+          <span class="skill-pill">WavLM</span><span class="skill-pill">HuBERT</span><span class="skill-pill">ASR</span><span class="skill-pill">VAD</span><span class="skill-pill">Librosa</span><span class="skill-pill">Pydub</span>
+        </div>
+      </div>
+      <div class="skills-row">
+        <div class="skills-cat">⚙️ MLOps & Infra</div>
+        <div class="skills-pills">
+          <span class="skill-pill">Docker</span><span class="skill-pill">FastAPI</span><span class="skill-pill">AWS</span><span class="skill-pill">Airflow</span><span class="skill-pill">CUDA</span><span class="skill-pill">CI/CD</span><span class="skill-pill">PostgreSQL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="section" id="education">
+    <div class="section-header">
+      <span class="section-icon">🎓</span>
+      <h2 class="section-title">Education</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="edu-card">
+      <div class="edu-logo" style="background:#dbeafe">🎓</div>
+      <div>
+        <div class="edu-degree">MSE in Data Science</div>
+        <div class="edu-school">Johns Hopkins University</div>
+        <div class="edu-meta">Expected May 2026 · GPA 3.78 / 4.0</div>
+        <div class="edu-courses">NLP: Self-supervised Models · Machine Translation · Data Mining · Information Retrieval & Web Agents</div>
+      </div>
+    </div>
+
+    <div class="edu-card">
+      <div class="edu-logo" style="background:#dcfce7">🏫</div>
+      <div>
+        <div class="edu-degree">BTech in Computation & Mathematics</div>
+        <div class="edu-school">Mahindra University</div>
+        <div class="edu-meta">Aug 2020 – May 2024 · GPA 3.72 / 4.0</div>
+        <div class="edu-courses">Deep Learning · Advanced Linear Algebra · Databases · Probability & Statistics · Computer Vision</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="section" id="contact">
+    <div class="section-header">
+      <span class="section-icon">✉️</span>
+      <h2 class="section-title">Contact</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="callout" style="background:#f0fdf4;border-color:#bbf7d0;color:#166534;margin-bottom:1.5rem">
+      <span class="callout-icon">🟢</span>
+      Actively seeking full-time AI/ML engineering roles starting <strong>May 2026</strong>. Open to startups, research labs, and growth-stage companies.
+    </div>
+
+    <div class="contact-grid">
+      <a href="mailto:kzaveri1@jh.edu" class="contact-card">
+        <div class="contact-icon" style="background:#dbeafe">✉️</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value">kzaveri1@jh.edu</div>
+        </div>
+      </a>
+      <a href="https://github.com/Khushangz" class="contact-card" target="_blank">
+        <div class="contact-icon" style="background:#f3f4f6">⌥</div>
+        <div>
+          <div class="contact-label">GitHub</div>
+          <div class="contact-value">github.com/Khushangz</div>
+        </div>
+      </a>
+      <a href="#" class="contact-card" target="_blank">
+        <div class="contact-icon" style="background:#dbeafe">in</div>
+        <div>
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-value">linkedin.com/in/khushangzaveri</div>
+        </div>
+      </a>
+      <a href="#" class="contact-card" target="_blank">
+        <div class="contact-icon" style="background:#fef3c7">◎</div>
+        <div>
+          <div class="contact-label">Google Scholar</div>
+          <div class="contact-value">View publications</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  function toggleExp(header) {
+    const body = header.nextElementSibling;
+    const arrow = header.querySelector('.toggle-arrow');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    arrow.classList.toggle('open', !isOpen);
+  }
+
+  // Active nav highlight on scroll
+  const sections = document.querySelectorAll('[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    navItems.forEach(item => {
+      item.classList.toggle('active', item.getAttribute('href') === '#' + current);
+    });
+  });
+</script>
+
+</body>
+</html>
