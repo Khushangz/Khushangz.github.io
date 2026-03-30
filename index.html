@@ -431,6 +431,48 @@
   .contact-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-bottom: 0.1rem; }
   .contact-value { font-size: 0.825rem; font-weight: 500; }
 
+
+  /* ACHIEVEMENTS */
+  .achievements-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 3.5rem;
+  }
+
+  .ach-card {
+    background: var(--surface);
+    padding: 1.5rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.4rem;
+    transition: background 0.15s;
+  }
+
+  .ach-card:hover { background: var(--surface2); }
+
+  .ach-icon { font-size: 1.4rem; margin-bottom: 0.2rem; }
+
+  .ach-val {
+    font-family: 'Lora', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .ach-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
   @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
   .hero { animation: fadeUp 0.5s ease forwards; }
   .section { animation: fadeUp 0.5s ease 0.1s both; }
@@ -523,9 +565,34 @@
       <div class="hero-links">
         <a href="mailto:kzaveri1@jh.edu" class="hero-link hero-link-primary">✉ Get in touch</a>
         <a href="https://github.com/Khushangz" class="hero-link hero-link-secondary" target="_blank">⌥ GitHub</a>
-        <a href="#" class="hero-link hero-link-secondary" target="_blank">in LinkedIn</a>
-        <a href="#" class="hero-link hero-link-secondary" target="_blank">◎ Scholar</a>
+        <a href="https://www.linkedin.com/in/khushang-zaveri/" class="hero-link hero-link-secondary" target="_blank">in LinkedIn</a>
+        <a href="https://scholar.google.com/citations?hl=en&amp;user=_hAIF8EAAAAJ" class="hero-link hero-link-secondary" target="_blank">◎ Scholar</a>
       </div>
+    </div>
+  </div>
+
+
+  <!-- ACHIEVEMENTS -->
+  <div class="achievements-row">
+    <div class="ach-card">
+      <div class="ach-icon">📰</div>
+      <div class="ach-val">NAACL 2025</div>
+      <div class="ach-label">Main Conference · Top 15 NLP Venue</div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon">🌍</div>
+      <div class="ach-val">5,435</div>
+      <div class="ach-label">Largest cross-cultural cinema dataset</div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon">🎙</div>
+      <div class="ach-val">First</div>
+      <div class="ach-label">End-to-end vocal tic detection system</div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon">🔒</div>
+      <div class="ach-val">DDIM</div>
+      <div class="ach-label">Diffusion inversion for privacy preservation</div>
     </div>
   </div>
 
@@ -806,9 +873,9 @@
       Actively seeking full-time AI/ML engineering roles starting <strong>May 2026</strong>. Open to startups, research labs, and growth-stage companies.
     </div>
     <div class="contact-grid">
-      <a href="mailto:kzaveri1@jh.edu" class="contact-card">
+      <a href="/cdn-cgi/l/email-protection#056e7f647360776c34456f6d2b606170" class="contact-card">
         <div class="contact-icon">✉️</div>
-        <div><div class="contact-label">Email</div><div class="contact-value">kzaveri1@jh.edu</div></div>
+        <div><div class="contact-label">Email</div><div class="contact-value"><span class="__cf_email__" data-cfemail="107b6a716675627921507a783e757465">[email&#160;protected]</span></div></div>
       </a>
       <a href="https://github.com/Khushangz" class="contact-card" target="_blank">
         <div class="contact-icon">⌥</div>
@@ -827,7 +894,7 @@
 
 </main>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   function toggleExp(header) {
     const body = header.nextElementSibling;
     const arrow = header.querySelector('.toggle-arrow');
@@ -857,13 +924,4 @@
 
   window.addEventListener('scroll', () => {
     let current = '';
-    document.querySelectorAll('[id]').forEach(s => {
-      if (window.scrollY >= s.offsetTop - 120) current = s.id;
-    });
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.classList.toggle('active', item.getAttribute('href') === '#' + current);
-    });
-  });
-</script>
-</body>
-</html>
+    document.querySelectorAll('[id]'
