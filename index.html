@@ -604,14 +604,14 @@
     </div>
 
     <div class="exp-card">
-      <div class="exp-card-header" onclick="toggleExp(this)">
+      <div class="exp-card-header">
         <div>
           <div class="exp-org-row"><span class="org-badge badge-blue">Johns Hopkins · CLSP</span></div>
           <div class="exp-title-text">Graduate Research Assistant</div>
         </div>
         <div style="display:flex;align-items:center;gap:0.75rem">
           <div class="exp-period">Aug 2025 – Present</div>
-          <div class="toggle-arrow open">▶</div>
+          <svg class="toggle-arrow open" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
       </div>
       <div class="exp-card-body open">
@@ -626,14 +626,14 @@
     </div>
 
     <div class="exp-card">
-      <div class="exp-card-header" onclick="toggleExp(this)">
+      <div class="exp-card-header">
         <div>
           <div class="exp-org-row"><span class="org-badge badge-green">St. Jude Children's Research Hospital</span></div>
           <div class="exp-title-text">Software Engineer Intern · AI/ML</div>
         </div>
         <div style="display:flex;align-items:center;gap:0.75rem">
           <div class="exp-period">May 2025 – Present</div>
-          <div class="toggle-arrow">▶</div>
+          <svg class="toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
       </div>
       <div class="exp-card-body">
@@ -649,14 +649,14 @@
     </div>
 
     <div class="exp-card">
-      <div class="exp-card-header" onclick="toggleExp(this)">
+      <div class="exp-card-header">
         <div>
           <div class="exp-org-row"><span class="org-badge badge-purple">University of Pennsylvania</span></div>
           <div class="exp-title-text">Research Intern · NLP</div>
         </div>
         <div style="display:flex;align-items:center;gap:0.75rem">
           <div class="exp-period">Jan 2023 – Jan 2024</div>
-          <div class="toggle-arrow">▶</div>
+          <svg class="toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
       </div>
       <div class="exp-card-body">
@@ -669,14 +669,14 @@
     </div>
 
     <div class="exp-card">
-      <div class="exp-card-header" onclick="toggleExp(this)">
+      <div class="exp-card-header">
         <div>
           <div class="exp-org-row"><span class="org-badge badge-orange">Veltris</span></div>
           <div class="exp-title-text">AI Intern</div>
         </div>
         <div style="display:flex;align-items:center;gap:0.75rem">
           <div class="exp-period">Jan 2024 – Jul 2024</div>
-          <div class="toggle-arrow">▶</div>
+          <svg class="toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
       </div>
       <div class="exp-card-body">
@@ -688,14 +688,14 @@
     </div>
 
     <div class="exp-card">
-      <div class="exp-card-header" onclick="toggleExp(this)">
+      <div class="exp-card-header">
         <div>
           <div class="exp-org-row"><span class="org-badge badge-blue">KPMG</span></div>
           <div class="exp-title-text">AI Intern</div>
         </div>
         <div style="display:flex;align-items:center;gap:0.75rem">
           <div class="exp-period">Jun 2023 – Aug 2023</div>
-          <div class="toggle-arrow">▶</div>
+          <svg class="toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
       </div>
       <div class="exp-card-body">
@@ -893,43 +893,71 @@
 
 </main>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  function toggleExp(header) {
-    const card = header.closest('.exp-card');
-    const body = card.querySelector('.exp-card-body');
-    const arrow = header.querySelector('.toggle-arrow');
-    const isOpen = body.classList.contains('open');
-    body.classList.toggle('open', !isOpen);
-    if (arrow) arrow.style.transform = isOpen ? '' : 'rotate(90deg)';
-  }
+<script>
+document.addEventListener('DOMContentLoaded', function() {
 
-  // Prevent more-info-btn from toggling the card
-  document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.more-info-btn').forEach(btn => {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-      });
-    });
+  // Set up card toggles
+  document.querySelectorAll('.exp-card').forEach(function(card) {
+    var header = card.querySelector('.exp-card-header');
+    var body = card.querySelector('.exp-card-body');
+    var arrow = card.querySelector('.toggle-arrow');
 
-    // Initialize open cards
-    document.querySelectorAll('.exp-card-body.open').forEach(body => {
-      const arrow = body.closest('.exp-card').querySelector('.toggle-arrow');
+    // Initialize display state
+    if (body.classList.contains('open')) {
+      body.style.display = 'block';
       if (arrow) arrow.style.transform = 'rotate(90deg)';
+    } else {
+      body.style.display = 'none';
+    }
+
+    header.addEventListener('click', function() {
+      var isOpen = body.style.display === 'block';
+      if (isOpen) {
+        body.style.display = 'none';
+        if (arrow) arrow.style.transform = '';
+      } else {
+        body.style.display = 'block';
+        if (arrow) arrow.style.transform = 'rotate(90deg)';
+      }
     });
   });
 
-  function openModal(id) {
-    document.getElementById(id).classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
+  // Prevent more-info buttons from closing cards
+  document.querySelectorAll('.more-info-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) { e.stopPropagation(); });
+  });
 
-  function closeModal(id) {
-    document.getElementById(id).classList.remove('open');
+  // Nav highlight on scroll
+  window.addEventListener('scroll', function() {
+    var current = '';
+    document.querySelectorAll('[id]').forEach(function(s) {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    document.querySelectorAll('.nav-item').forEach(function(item) {
+      item.classList.toggle('active', item.getAttribute('href') === '#' + current);
+    });
+  });
+
+});
+
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(function(m) {
+      m.classList.remove('open');
+    });
     document.body.style.overflow = '';
   }
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      document.querySelectorAll('.modal-overlay.open').forEach(m => {
-        m.classList.remove('open');
-        document.body.
+});
+</script>
+</body>
+</html>
