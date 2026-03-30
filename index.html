@@ -271,8 +271,7 @@
 
   .more-info-btn:hover { background: rgba(88,166,255,0.15); border-color: var(--accent); }
 
-  .toggle-arrow { font-size: 0.65rem; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; }
-  .toggle-arrow.open { transform: rotate(90deg); }
+  .toggle-arrow { font-size: 0.65rem; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; display: inline-block; }
 
   /* MODAL */
   .modal-overlay {
@@ -896,12 +895,28 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   function toggleExp(header) {
-    const body = header.nextElementSibling;
+    const card = header.closest('.exp-card');
+    const body = card.querySelector('.exp-card-body');
     const arrow = header.querySelector('.toggle-arrow');
     const isOpen = body.classList.contains('open');
     body.classList.toggle('open', !isOpen);
-    arrow.classList.toggle('open', !isOpen);
+    if (arrow) arrow.style.transform = isOpen ? '' : 'rotate(90deg)';
   }
+
+  // Prevent more-info-btn from toggling the card
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.more-info-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+    });
+
+    // Initialize open cards
+    document.querySelectorAll('.exp-card-body.open').forEach(body => {
+      const arrow = body.closest('.exp-card').querySelector('.toggle-arrow');
+      if (arrow) arrow.style.transform = 'rotate(90deg)';
+    });
+  });
 
   function openModal(id) {
     document.getElementById(id).classList.add('open');
