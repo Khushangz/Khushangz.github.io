@@ -276,23 +276,20 @@
 
   /* MODAL */
   .modal-overlay {
+    display: none;
     position: fixed; inset: 0;
-    background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
-    z-index: 200; display: flex; align-items: center; justify-content: center; padding: 2rem;
-    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    background: rgba(0,0,0,0.75);
+    z-index: 200; align-items: center; justify-content: center; padding: 2rem;
   }
 
-  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal-overlay:target { display: flex; }
 
   .modal {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: 14px; max-width: 680px; width: 100%;
     max-height: 80vh; overflow-y: auto;
     padding: 2rem 2.5rem; position: relative;
-    transform: translateY(16px); transition: transform 0.2s;
   }
-
-  .modal-overlay.open .modal { transform: translateY(0); }
 
   .modal-close {
     position: absolute; top: 1.25rem; right: 1.25rem;
@@ -515,9 +512,9 @@
 </aside>
 
 <!-- MODALS -->
-<div class="modal-overlay" id="modal-clsp" onclick="closeModal('modal-clsp')">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-close" onclick="closeModal('modal-clsp')">✕</div>
+<div class="modal-overlay" id="modal-clsp"><a href="#" style="position:absolute;inset:0;display:block;"></a>
+  <div class="modal" style="position:relative;z-index:1;">
+    <a href="#" class="modal-close">✕</a>
     <div class="modal-badge badge-blue">Johns Hopkins · CLSP</div>
     <div class="modal-title">Vocal Tic Detection — Deep Dive</div>
     <div class="modal-body">
@@ -530,9 +527,9 @@
   </div>
 </div>
 
-<div class="modal-overlay" id="modal-stjude" onclick="closeModal('modal-stjude')">
-  <div class="modal" onclick="event.stopPropagation()">
-    <div class="modal-close" onclick="closeModal('modal-stjude')">✕</div>
+<div class="modal-overlay" id="modal-stjude"><a href="#" style="position:absolute;inset:0;display:block;"></a>
+  <div class="modal" style="position:relative;z-index:1;">
+    <a href="#" class="modal-close">✕</a>
     <div class="modal-badge badge-green">St. Jude Children's Research Hospital</div>
     <div class="modal-title">Medical Imaging AI — Deep Dive</div>
     <div class="modal-body">
@@ -619,7 +616,7 @@
           <li>Achieved 0.74 AUROC on patient-stratified intra- and inter-patient splits despite 98:2 class imbalance</li>
           <li>Designed baseline experiments using SVM, VAD, MMD, LDA for interpretable tic-related signal analysis</li>
         </ul>
-        <button class="more-info-btn" onclick="openModal('modal-clsp')">◎ More info</button>
+        <a href="#modal-clsp" class="more-info-btn">◎ More info</a>
       </div>
     </div>
 
@@ -643,7 +640,7 @@
           <li>Developed DDIM inversion pipeline (VAE, U-Net, null-text) to probe identity leakage in synthetic images</li>
           <li>Performed white-box membership inference on chest X-ray LDMs using timestep-conditioned denoising loss</li>
         </ul>
-        <button class="more-info-btn" onclick="openModal('modal-stjude')">◎ More info</button>
+        <a href="#modal-stjude" class="more-info-btn">◎ More info</a>
       </div>
     </div>
 
