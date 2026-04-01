@@ -559,7 +559,7 @@
         <span class="chip"><span class="chip-dot" style="background:#f0883e"></span>NAACL 2025 · COLM 2025</span>
       </div>
       <div class="hero-links">
-        <a href="/cdn-cgi/l/email-protection#dcb7a6bdaab9aeb5ed9cb6b4f2b9b8a9" class="hero-link hero-link-primary">✉ Get in touch</a>
+        <span class="hero-link hero-link-primary" style="cursor:pointer;" onclick="navigator.clipboard&&navigator.clipboard.writeText('kzaveri1'+'@'+'jh.edu');this.innerText='Copied!✓';setTimeout(()=>this.innerText='✉ kzaveri1@jh.edu',2000)">✉ kzaveri1@jh.edu</span>
         <a href="https://github.com/Khushangz" class="hero-link hero-link-secondary" target="_blank">⌥ GitHub</a>
         <a href="https://www.linkedin.com/in/khushang-zaveri/" class="hero-link hero-link-secondary" target="_blank">in LinkedIn</a>
         <a href="https://scholar.google.com/citations?hl=en&amp;user=_hAIF8EAAAAJ" class="hero-link hero-link-secondary" target="_blank">◎ Scholar</a>
@@ -881,10 +881,10 @@
       <div class="section-divider"></div>
     </div>
     <div class="contact-grid">
-      <a href="/cdn-cgi/l/email-protection#a0cbdac1d6c5d2c991e0cac88ec5c4d5" class="contact-card">
+      <span class="contact-card" style="cursor:pointer;" onclick="navigator.clipboard&&navigator.clipboard.writeText('kzaveri1'+'@'+'jh.edu');this.querySelector('.contact-value').innerText='Copied!✓';setTimeout(()=>this.querySelector('.contact-value').innerText='kzaveri1@jh.edu',2000)">
         <div class="contact-icon">✉️</div>
-        <div><div class="contact-label">Email</div><div class="contact-value"><span class="__cf_email__" data-cfemail="d5beafb4a3b0a7bce495bfbdfbb0b1a0">[email&#160;protected]</span></div></div>
-      </a>
+        <div><div class="contact-label">Email</div><div class="contact-value">kzaveri1@jh.edu</div></div>
+      </span>
       <a href="https://github.com/Khushangz" class="contact-card" target="_blank">
         <div class="contact-icon">⌥</div>
         <div><div class="contact-label">GitHub</div><div class="contact-value">github.com/Khushangz</div></div>
@@ -925,18 +925,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
 });
-
-
-  // Build email links at runtime to avoid Cloudflare obfuscation
-  var u = 'kzaveri1';
-  var d = 'jh.edu';
-  var email = u + '@' + d;
-  var btn = document.getElementById('contact-btn');
-  if (btn) btn.href = 'mailto:' + email;
-  var card = document.getElementById('email-card');
-  if (card) card.href = 'mailto:' + email;
-
-function openModal(id) {
+  function openModal(id) {
   document.getElementById(id).classList.add('open');
   document.body.style.overflow = 'hidden';
 }
