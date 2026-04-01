@@ -249,7 +249,7 @@
   .exp-period { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--muted); white-space: nowrap; }
 
   .exp-card-body { padding: 0.25rem 1.5rem 1.25rem; display: none; }
-  .exp-card-body.open { display: block; }
+  .exp-card.expanded .exp-card-body { display: block; }
 
   .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1rem; }
 
@@ -902,27 +902,19 @@
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 document.addEventListener('DOMContentLoaded', function() {
 
-  // Set up card toggles
+  // Set up card toggles using class toggling only
   document.querySelectorAll('.exp-card').forEach(function(card) {
     var header = card.querySelector('.exp-card-header');
     var body = card.querySelector('.exp-card-body');
     var arrow = card.querySelector('.toggle-arrow');
 
-    // Initialize display state
-    if (body.classList.contains('open')) {
-      body.style.display = 'block';
-      if (arrow) arrow.style.transform = 'rotate(90deg)';
-    } else {
-      body.style.display = 'none';
-    }
-
     header.addEventListener('click', function() {
-      var isOpen = body.style.display === 'block';
+      var isOpen = card.classList.contains('expanded');
       if (isOpen) {
-        body.style.display = 'none';
+        card.classList.remove('expanded');
         if (arrow) arrow.style.transform = '';
       } else {
-        body.style.display = 'block';
+        card.classList.add('expanded');
         if (arrow) arrow.style.transform = 'rotate(90deg)';
       }
     });
