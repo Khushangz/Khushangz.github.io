@@ -938,6 +938,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+
+  // Build email links at runtime to avoid Cloudflare obfuscation
+  var u = 'kzaveri1';
+  var d = 'jh.edu';
+  var email = u + '@' + d;
+  var btn = document.getElementById('contact-btn');
+  if (btn) btn.href = 'mailto:' + email;
+  var card = document.getElementById('email-card');
+  if (card) card.href = 'mailto:' + email;
+
 function openModal(id) {
   document.getElementById(id).classList.add('open');
   document.body.style.overflow = 'hidden';
