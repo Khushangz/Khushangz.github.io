@@ -225,6 +225,10 @@
     overflow: hidden; margin-bottom: 0.75rem;
     background: var(--card-bg); transition: border-color 0.2s;
   }
+  .exp-toggle { display: none; }
+  .exp-card-body { padding: 0.25rem 1.5rem 1.25rem; max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+  .exp-toggle:checked ~ .exp-card-body { max-height: 600px; }
+  .exp-toggle:checked ~ .exp-card-header .toggle-arrow { transform: rotate(90deg); }
 
   .exp-card:hover { border-color: #444c56; }
 
@@ -247,9 +251,6 @@
 
   .exp-title-text { font-size: 0.925rem; font-weight: 500; color: var(--text); }
   .exp-period { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--muted); white-space: nowrap; }
-
-  .exp-card-body { padding: 0.25rem 1.5rem 1.25rem; display: none; }
-  .exp-card.expanded .exp-card-body { display: block; }
 
   .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1rem; }
 
@@ -603,7 +604,8 @@
     </div>
 
     <div class="exp-card">
-      <div class="exp-card-header">
+      <input type="checkbox" class="exp-toggle" id="exp-1">
+      <label class="exp-card-header" for="exp-1" style="cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1.25rem 1.5rem;transition:background 0.15s;user-select:none;">
         <div>
           <div class="exp-org-row"><span class="org-badge badge-blue">Johns Hopkins · CLSP</span></div>
           <div class="exp-title-text">Graduate Research Assistant</div>
@@ -612,7 +614,7 @@
           <div class="exp-period">Aug 2025 – Present</div>
           <svg class="toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-      </div>
+      </label>
       <div class="exp-card-body">
         <ul class="exp-bullets">
           <li>Building first end-to-end vocal tic detection system using WavLM + CNN-BiLSTM with 105-frame receptive field for 2.1s temporal windows</li>
@@ -625,7 +627,8 @@
     </div>
 
     <div class="exp-card">
-      <div class="exp-card-header">
+      <input type="checkbox" class="exp-toggle" id="exp-2">
+      <label class="exp-card-header" for="exp-2" style="cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1.25rem 1.5rem;transition:background 0.15s;user-select:none;">
         <div>
           <div class="exp-org-row"><span class="org-badge badge-green">St. Jude Children's Research Hospital</span></div>
           <div class="exp-title-text">Software Engineer Intern · AI/ML</div>
@@ -634,7 +637,7 @@
           <div class="exp-period">May 2025 – Present</div>
           <svg class="toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-      </div>
+      </label>
       <div class="exp-card-body">
         <ul class="exp-bullets">
           <li>Scaled FAISS-based retrieval to 600K+ chest X-rays; achieved SOTA 0.89 mAP@R and 0.9 P@1</li>
@@ -648,7 +651,8 @@
     </div>
 
     <div class="exp-card">
-      <div class="exp-card-header">
+      <input type="checkbox" class="exp-toggle" id="exp-3">
+      <label class="exp-card-header" for="exp-3" style="cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1.25rem 1.5rem;transition:background 0.15s;user-select:none;">
         <div>
           <div class="exp-org-row"><span class="org-badge badge-purple">University of Pennsylvania</span></div>
           <div class="exp-title-text">Research Intern · NLP</div>
@@ -657,7 +661,7 @@
           <div class="exp-period">Jan 2023 – Jan 2024</div>
           <svg class="toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-      </div>
+      </label>
       <div class="exp-card-body">
         <ul class="exp-bullets">
           <li>Led creation of the largest cross-cultural dataset from 5,435 movie transcripts to identify harmful social norms</li>
@@ -668,7 +672,8 @@
     </div>
 
     <div class="exp-card">
-      <div class="exp-card-header">
+      <input type="checkbox" class="exp-toggle" id="exp-4">
+      <label class="exp-card-header" for="exp-4" style="cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1.25rem 1.5rem;transition:background 0.15s;user-select:none;">
         <div>
           <div class="exp-org-row"><span class="org-badge badge-orange">Veltris</span></div>
           <div class="exp-title-text">AI Intern</div>
@@ -677,7 +682,7 @@
           <div class="exp-period">Jan 2024 – Jul 2024</div>
           <svg class="toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-      </div>
+      </label>
       <div class="exp-card-body">
         <ul class="exp-bullets">
           <li>Engineered Biomedical NER model; fine-tuned BERT & RoBERTa achieving 0.8 Macro F1</li>
@@ -687,7 +692,8 @@
     </div>
 
     <div class="exp-card">
-      <div class="exp-card-header">
+      <input type="checkbox" class="exp-toggle" id="exp-5">
+      <label class="exp-card-header" for="exp-5" style="cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1.25rem 1.5rem;transition:background 0.15s;user-select:none;">
         <div>
           <div class="exp-org-row"><span class="org-badge badge-blue">KPMG</span></div>
           <div class="exp-title-text">AI Intern</div>
@@ -696,7 +702,7 @@
           <div class="exp-period">Jun 2023 – Aug 2023</div>
           <svg class="toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-      </div>
+      </label>
       <div class="exp-card-body">
         <ul class="exp-bullets">
           <li>Fine-tuned Flan-T5 and Falcon-7B as GEC models using PEFT to support auditor workflows</li>
@@ -902,22 +908,7 @@
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 document.addEventListener('DOMContentLoaded', function() {
 
-  // Set up card toggles using class toggling only
-  document.querySelectorAll('.exp-card').forEach(function(card) {
-    var header = card.querySelector('.exp-card-header');
-    var body = card.querySelector('.exp-card-body');
-    var arrow = card.querySelector('.toggle-arrow');
 
-    header.addEventListener('click', function() {
-      var isOpen = card.classList.contains('expanded');
-      if (isOpen) {
-        card.classList.remove('expanded');
-        if (arrow) arrow.style.transform = '';
-      } else {
-        card.classList.add('expanded');
-        if (arrow) arrow.style.transform = 'rotate(90deg)';
-      }
-    });
   });
 
   // Prevent more-info buttons from closing cards
