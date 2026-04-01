@@ -274,43 +274,15 @@
 
   .toggle-arrow { font-size: 0.65rem; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; display: inline-block; }
 
-  /* MODAL */
-  .modal-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.75);
-    z-index: 200; align-items: center; justify-content: center; padding: 2rem;
-  }
 
-  .modal-overlay:target { display: flex; }
-
-  .modal {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 14px; max-width: 680px; width: 100%;
-    max-height: 80vh; overflow-y: auto;
-    padding: 2rem 2.5rem; position: relative;
-  }
-
-  .modal-close {
-    position: absolute; top: 1.25rem; right: 1.25rem;
-    background: var(--surface2); border: 1px solid var(--border);
-    color: var(--muted); width: 28px; height: 28px;
-    border-radius: 6px; display: flex; align-items: center; justify-content: center;
-    cursor: pointer; font-size: 0.9rem; transition: all 0.15s;
-  }
-
-  .modal-close:hover { color: var(--text); border-color: #444; }
-
-  .modal-badge { display: inline-block; font-size: 0.68rem; font-weight: 500; padding: 0.2rem 0.6rem; border-radius: 4px; margin-bottom: 0.75rem; }
-
-  .modal-title {
-    font-family: 'Lora', serif; font-size: 1.3rem; font-weight: 600;
-    margin-bottom: 1.25rem; color: var(--text); line-height: 1.3; padding-right: 2rem;
-  }
-
-  .modal-body { font-size: 0.875rem; color: #8b949e; line-height: 1.8; }
-  .modal-body p { margin-bottom: 1rem; }
-  .modal-body p:last-child { margin-bottom: 0; }
+  .exp-details { margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+  .exp-details summary { cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.9rem; background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; font-size: 0.775rem; color: var(--accent); font-family: 'IBM Plex Sans', sans-serif; }
+  .exp-details summary::-webkit-details-marker { display: none; }
+  .exp-details summary:hover { background: rgba(88,166,255,0.15); border-color: var(--accent); }
+  .exp-details[open] summary { margin-bottom: 1rem; }
+  .exp-details-body { font-size: 0.875rem; color: #8b949e; line-height: 1.8; }
+  .exp-details-body p { margin-bottom: 0.85rem; }
+  .exp-details-body p:last-child { margin-bottom: 0; }
 
   /* PUBLICATIONS */
   .pub-card {
@@ -511,36 +483,6 @@
   </nav>
 </aside>
 
-<!-- MODALS -->
-<div class="modal-overlay" id="modal-clsp"><a href="#" style="position:absolute;inset:0;display:block;"></a>
-  <div class="modal" style="position:relative;z-index:1;">
-    <a href="#" class="modal-close">✕</a>
-    <div class="modal-badge badge-blue">Johns Hopkins · CLSP</div>
-    <div class="modal-title">Vocal Tic Detection — Deep Dive</div>
-    <div class="modal-body">
-      <p>At Johns Hopkins University's Center for Language and Speech Processing, I am developing the first end-to-end vocal tic detection system using deep temporal modeling and speech embeddings in collaboration with clinical partners at Johns Hopkins Hospital.</p>
-      <p>The system processes raw audio into 20ms frame-level predictions, leveraging WavLM embeddings as input to a CNN-BiLSTM architecture with 12× temporal compression and 105-frame receptive field optimized for capturing tic patterns across 2.1-second windows.</p>
-      <p>I engineered a complete pipeline including preprocessing, segment alignment, padded sequence handling, and custom undersampling strategies to address severe class imbalance (98:2 non-tic to tic ratio). Through systematic experimentation with Jensen-Shannon divergence-optimized data splits, strategic undersampling, higher receptive field CNN architecture, and temporal smoothing, I improved AUROC by 80% from baseline approaches.</p>
-      <p>The model is trained and evaluated on patient-stratified intra- and inter-patient splits, achieving 0.74 AUROC despite operating at high temporal resolution with severe class imbalance. I also designed baseline experiments using SVM, VAD, MMD, and LDA to analyze tic-related signal transitions and dataset variance across patient splits, building diagnostic tools for interpretable analysis.</p>
-      <p>This cross-disciplinary effort integrates ML engineering, speech processing, and clinical insight to lay the foundation for automated tic detection systems in therapeutic and research settings.</p>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal-stjude"><a href="#" style="position:absolute;inset:0;display:block;"></a>
-  <div class="modal" style="position:relative;z-index:1;">
-    <a href="#" class="modal-close">✕</a>
-    <div class="modal-badge badge-green">St. Jude Children's Research Hospital</div>
-    <div class="modal-title">Medical Imaging AI — Deep Dive</div>
-    <div class="modal-body">
-      <p>At St. Jude Children's Research Hospital, my team and I have developed a contrastive copy-detection model aimed at identifying potential privacy breaches in publicly released medical datasets. I am leading the benchmarking of its retrieval and verification pipeline, ensuring reproducibility through consistent environments and data processing protocols.</p>
-      <p>This involves FAISS-based large-scale image retrieval, Siamese networks for patient verification, and logistic threshold-based decision functions, with evaluation metrics including patient-level bootstrap resampling, mAP@R, AUROC, precision@1, and confidence intervals. I've optimized the benchmarking pipeline for efficiency and scalability, validating the model across more than 600,000 chest X-ray images and achieving state-of-the-art accuracy with 0.89 mAP@R and 0.9 precision@1 — significantly outperforming prior approaches.</p>
-      <p>In parallel, I am working on a disease classification task using both synthetic and real-world chest X-ray datasets, training DenseNet-121 for multi-label thoracic pathology detection using FAISS-based deduplication and achieving 0.83 AUROC across 14 diseases.</p>
-      <p>Another line of work involves diffusion model inversion, where I implement and extend latent inversion pipelines using MONAI's generative framework. This includes applying DDIM-based stable diffusion inversion via null-text guidance for conditional reconstructions and generalizing it to DDPM for stochastic generation models. The inversion pipeline involves manipulating the latent space through VAE, U-Net, and noise schedulers for high-fidelity medical image reconstruction.</p>
-    </div>
-  </div>
-</div>
-
 <!-- MAIN -->
 <main class="main">
 
@@ -556,7 +498,7 @@
         <span class="chip"><span class="chip-dot" style="background:#f0883e"></span>NAACL 2025 · COLM 2025</span>
       </div>
       <div class="hero-links">
-        <span class="hero-link hero-link-primary" style="cursor:pointer;" onclick="navigator.clipboard&&navigator.clipboard.writeText('kzaveri1'+'@'+'jh.edu');this.innerText='Copied!✓';setTimeout(()=>this.innerText='✉ kzaveri1@jh.edu',2000)">✉ kzaveri1@jh.edu</span>
+        <span class="hero-link hero-link-primary" style="cursor:pointer;" id="hero-email-btn">✉ <span>kzaveri1</span><span>&#64;</span><span>jh.edu</span></span>
         <a href="https://github.com/Khushangz" class="hero-link hero-link-secondary" target="_blank">⌥ GitHub</a>
         <a href="https://www.linkedin.com/in/khushang-zaveri/" class="hero-link hero-link-secondary" target="_blank">in LinkedIn</a>
         <a href="https://scholar.google.com/citations?hl=en&amp;user=_hAIF8EAAAAJ" class="hero-link hero-link-secondary" target="_blank">◎ Scholar</a>
@@ -616,7 +558,15 @@
           <li>Achieved 0.74 AUROC on patient-stratified intra- and inter-patient splits despite 98:2 class imbalance</li>
           <li>Designed baseline experiments using SVM, VAD, MMD, LDA for interpretable tic-related signal analysis</li>
         </ul>
-        <a href="#modal-clsp" class="more-info-btn">◎ More info</a>
+        <details class="exp-details">
+          <summary>◎ More info</summary>
+          <div class="exp-details-body">
+            <p>At Johns Hopkins University's Center for Language and Speech Processing, I am developing the first end-to-end vocal tic detection system using deep temporal modeling and speech embeddings in collaboration with clinical partners at Johns Hopkins Hospital.</p>
+            <p>The system processes raw audio into 20ms frame-level predictions, leveraging WavLM embeddings as input to a CNN-BiLSTM architecture with 12× temporal compression and 105-frame receptive field optimized for capturing tic patterns across 2.1-second windows.</p>
+            <p>I engineered a complete pipeline including preprocessing, segment alignment, padded sequence handling, and custom undersampling strategies to address severe class imbalance (98:2 non-tic to tic ratio). Through systematic experimentation with Jensen-Shannon divergence-optimized data splits, strategic undersampling, higher receptive field CNN architecture, and temporal smoothing, I improved AUROC by 80% from baseline approaches.</p>
+            <p>The model is trained and evaluated on patient-stratified intra- and inter-patient splits, achieving 0.74 AUROC despite operating at high temporal resolution with severe class imbalance. I also designed baseline experiments using SVM, VAD, MMD, and LDA to analyze tic-related signal transitions and dataset variance across patient splits.</p>
+          </div>
+        </details>
       </div>
     </div>
 
@@ -640,7 +590,14 @@
           <li>Developed DDIM inversion pipeline (VAE, U-Net, null-text) to probe identity leakage in synthetic images</li>
           <li>Performed white-box membership inference on chest X-ray LDMs using timestep-conditioned denoising loss</li>
         </ul>
-        <a href="#modal-stjude" class="more-info-btn">◎ More info</a>
+        <details class="exp-details">
+          <summary>◎ More info</summary>
+          <div class="exp-details-body">
+            <p>At St. Jude Children's Research Hospital, my team and I developed a contrastive copy-detection model aimed at identifying potential privacy breaches in publicly released medical datasets. I lead the benchmarking of its retrieval and verification pipeline, ensuring reproducibility through consistent environments and data processing protocols.</p>
+            <p>This involves FAISS-based large-scale image retrieval, Siamese networks for patient verification, and logistic threshold-based decision functions. I've validated the model across 600,000+ chest X-ray images achieving SOTA 0.89 mAP@R and 0.9 precision@1 — significantly outperforming prior approaches.</p>
+            <p>In parallel, I'm training DenseNet-121 for multi-label thoracic pathology detection using FAISS-based deduplication across 14 diseases, achieving 0.83 AUROC. Another line of work involves DDIM-based latent diffusion inversion via null-text guidance for conditional reconstructions, generalizing to DDPM for stochastic generation, manipulating the latent space through VAE, U-Net, and noise schedulers for high-fidelity medical image reconstruction.</p>
+          </div>
+        </details>
       </div>
     </div>
 
@@ -878,9 +835,9 @@
       <div class="section-divider"></div>
     </div>
     <div class="contact-grid">
-      <span class="contact-card" style="cursor:pointer;" onclick="navigator.clipboard&&navigator.clipboard.writeText('kzaveri1'+'@'+'jh.edu');this.querySelector('.contact-value').innerText='Copied!✓';setTimeout(()=>this.querySelector('.contact-value').innerText='kzaveri1@jh.edu',2000)">
+      <span class="contact-card" style="cursor:pointer;" id="email-copy-card">
         <div class="contact-icon">✉️</div>
-        <div><div class="contact-label">Email</div><div class="contact-value">kzaveri1@jh.edu</div></div>
+        <div><div class="contact-label">Email</div><div class="contact-value" id="email-display"><span>kzaveri1</span><span>&#64;</span><span>jh.edu</span></div></div>
       </span>
       <a href="https://github.com/Khushangz" class="contact-card" target="_blank">
         <div class="contact-icon">⌥</div>
