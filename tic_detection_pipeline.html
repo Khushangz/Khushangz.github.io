@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Detection Pipeline</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f0f0f;color:#e8e8e8;min-height:100vh;padding:2rem}
+h1{font-size:22px;font-weight:500;color:#f0f0f0;margin-bottom:4px}
+.subtitle{font-size:13px;color:#888;margin-bottom:1.5rem}
+.top-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem}
+.nav-btn{padding:6px 14px;font-size:13px;font-weight:500;border:0.5px solid #333;border-radius:8px;background:transparent;color:#888;cursor:pointer;transition:all 0.15s}
+.nav-btn.active{background:#1a1a1a;color:#f0f0f0;border-color:#555}
+.nav-btn:hover{border-color:#555;color:#ccc}
+.view{display:none}.view.active{display:block}
+
+.pipeline-flow{display:flex;flex-direction:column;gap:4px}
+.stage-row{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start}
+.stage-num{font-size:11px;font-weight:500;color:#555;padding-top:10px;text-align:right;font-family:'SF Mono',monospace}
+.stage-card{border:0.5px solid #222;border-radius:12px;padding:10px 14px;cursor:pointer;transition:all 0.15s;background:#141414}
+.stage-card:hover{border-color:#444;background:#1a1a1a}
+.stage-card.active{border-color:#378ADD}
+.stage-header{display:flex;align-items:center;gap:10px}
+.stage-tag{font-size:11px;font-weight:500;padding:2px 8px;border-radius:4px;font-family:'SF Mono',monospace}
+.tag-data{background:#0c1f2e;color:#5ba3d9}
+.tag-feat{background:#0e1f0e;color:#5aad5a}
+.tag-split{background:#271f0a;color:#d4973a}
+.tag-model{background:#1a1030;color:#9b8de8}
+.tag-eval{background:#2a1010;color:#d47070}
+.stage-name{font-size:14px;font-weight:500;color:#e8e8e8}
+.stage-desc{font-size:13px;color:#666;margin-top:4px}
+.stage-detail{display:none;margin-top:12px;border-top:0.5px solid #222;padding-top:12px}
+.stage-detail.open{display:block}
+.detail-section{margin-bottom:12px}
+.detail-label{font-size:11px;font-weight:500;color:#555;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:6px}
+.fn-block{font-family:'SF Mono',Menlo,monospace;font-size:12px;background:#0a0a0a;border:0.5px solid #222;border-radius:8px;padding:10px 12px;color:#e8e8e8;line-height:1.6;white-space:pre-wrap}
+.param{color:#5ba3d9}.pval{color:#5aad5a}.fn-name{color:#9b8de8}.y-comment{color:#555}
+.arrow{display:flex;justify-content:center;padding:2px 0;color:#444;font-size:16px}
+.io-row{display:flex;gap:8px;flex-wrap:wrap}
+.io-pill{font-size:12px;padding:3px 10px;border-radius:20px;border:0.5px solid #2a2a2a;color:#888;background:#141414;font-family:'SF Mono',monospace}
+.io-pill.out{border-color:#185FA5;color:#5ba3d9;background:#0c1f2e}
+
+.files-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.file-card{border:0.5px solid #222;border-radius:12px;padding:12px 14px;background:#141414;cursor:pointer;transition:all 0.15s}
+.file-card:hover{border-color:#444;background:#1a1a1a}
+.file-card.active{border-color:#378ADD}
+.file-icon{font-size:12px;font-weight:500;font-family:'SF Mono',monospace;padding:2px 8px;border-radius:4px;display:inline-block;margin-bottom:8px}
+.icon-py{background:#0e1f0e;color:#5aad5a}
+.icon-yaml{background:#271f0a;color:#d4973a}
+.icon-csv{background:#0c1f2e;color:#5ba3d9}
+.icon-sh{background:#1a1030;color:#9b8de8}
+.file-name{font-size:13px;font-weight:500;color:#e8e8e8;margin-bottom:4px;font-family:'SF Mono',monospace}
+.file-role{font-size:12px;color:#555}
+.file-detail{margin-top:14px;border:0.5px solid #222;border-radius:12px;padding:14px;background:#141414}
+.file-detail h3{font-size:13px;font-weight:500;margin-bottom:12px;color:#9b8de8;font-family:'SF Mono',monospace}
+.fn-list{display:flex;flex-direction:column;gap:6px}
+.fn-item{font-size:12px;font-family:'SF Mono',monospace;padding:8px 10px;background:#0a0a0a;border-radius:8px;border:0.5px solid #222;line-height:1.6;color:#ccc}
+
+.cfg-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.cfg-card{border:0.5px solid #222;border-radius:12px;padding:12px 14px;background:#141414;cursor:pointer;transition:all 0.15s}
+.cfg-card:hover{border-color:#444}
+.cfg-card.active{border-color:#378ADD}
+.cfg-name{font-size:13px;font-weight:500;font-family:'SF Mono',monospace;margin-bottom:4px;color:#e8e8e8}
+.cfg-role{font-size:12px;color:#555}
+.cfg-detail{margin-top:14px;border:0.5px solid #222;border-radius:12px;padding:14px}
+.yaml-block{font-family:'SF Mono',Menlo,monospace;font-size:12px;background:#0a0a0a;border-radius:8px;padding:12px;line-height:1.8;white-space:pre-wrap;color:#e8e8e8}
+.y-key{color:#5ba3d9}.y-val{color:#5aad5a}.y-comment2{color:#555}
+
+.container{max-width:900px;margin:0 auto}
+
+.flow-svg-wrap{background:#141414;border:0.5px solid #222;border-radius:12px;padding:16px;overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>tic_detection</h1>
+<p class="subtitle">pipeline design · stages · files · configs</p>
+
+<div class="top-nav">
+  <button class="nav-btn active" onclick="showView('pipeline',this)">Pipeline</button>
+  <button class="nav-btn" onclick="showView('flow',this)">Data flow</button>
+  <button class="nav-btn" onclick="showView('files',this)">Files</button>
+  <button class="nav-btn" onclick="showView('configs',this)">Configs</button>
+</div>
+
+<!-- PIPELINE VIEW -->
+<div id="view-pipeline" class="view active">
+<div class="pipeline-flow">
+
+<div class="stage-row">
+<div class="stage-num">00</div>
+<div class="stage-card" onclick="toggleStage(this)">
+<div class="stage-header"><span class="stage-tag tag-data">.py</span><span class="stage-name">inventory</span></div>
+<div class="stage-desc">Validate audio files and tic.csv, produce manifest</div>
+<div class="stage-detail">
+<div class="detail-section"><div class="detail-label">function</div>
+<div class="fn-block"><span class="fn-name">run_inventory</span>(<span class="param">audio_dir</span>, <span class="param">tic_csv</span>, <span class="param">output_dir</span>, <span class="param">min_duration_s</span>)</div></div>
+<div class="detail-section"><div class="detail-label">inputs</div><div class="io-row"><span class="io-pill">raw_audio/</span><span class="io-pill">tic.csv</span></div></div>
+<div class="detail-section"><div class="detail-label">outputs</div><div class="io-row"><span class="io-pill out">meta/manifest.csv</span></div></div>
+</div></div></div>
+
+<div class="arrow">↓</div>
+
+<div class="stage-row">
+<div class="stage-num">01</div>
+<div class="stage-card" onclick="toggleStage(this)">
+<div class="stage-header"><span class="stage-tag tag-data">.py</span><span class="stage-name">chunk</span></div>
+<div class="stage-desc">Cut audio into 30s chunks for WavLM, write audio.yaml</div>
+<div class="stage-detail">
+<div class="detail-section"><div class="detail-label">function</div>
+<div class="fn-block"><span class="fn-name">run_chunk</span>(<span class="param">audio_dir</span>, <span class="param">manifest_csv</span>, <span class="param">output_dir</span>, <span class="param">chunk_duration_s</span>=<span class="pval">30</span>, <span class="param">stride_s</span>=<span class="pval">30</span>, <span class="param">pad_last</span>=<span class="pval">True</span>)</div></div>
+<div class="detail-section"><div class="detail-label">inputs</div><div class="io-row"><span class="io-pill">raw_audio/</span><span class="io-pill">meta/manifest.csv</span></div></div>
+<div class="detail-section"><div class="detail-label">outputs</div><div class="io-row"><span class="io-pill out">chunks/</span><span class="io-pill out">meta/chunks.csv</span><span class="io-pill out">configs/audio.yaml</span></div></div>
+</div></div></div>
+
+<div class="arrow">↓</div>
+
+<div class="stage-row">
+<div class="stage-num">02</div>
+<div class="stage-card" onclick="toggleStage(this)">
+<div class="stage-header"><span class="stage-tag tag-feat">.py</span><span class="stage-name">extract</span></div>
+<div class="stage-desc">WavLM forward pass → [T, D] embedding matrices per chunk</div>
+<div class="stage-detail">
+<div class="detail-section"><div class="detail-label">function</div>
+<div class="fn-block"><span class="fn-name">run_extract</span>(<span class="param">chunks_csv</span>, <span class="param">chunks_dir</span>, <span class="param">output_dir</span>, <span class="param">model</span>=<span class="pval">"wavlm-base"</span>, <span class="param">layer</span>=<span class="pval">6</span>, <span class="param">batch_size</span>=<span class="pval">8</span>, <span class="param">device</span>=<span class="pval">"cuda"</span>)</div></div>
+<div class="detail-section"><div class="detail-label">inputs</div><div class="io-row"><span class="io-pill">chunks/</span><span class="io-pill">meta/chunks.csv</span><span class="io-pill">configs/audio.yaml</span></div></div>
+<div class="detail-section"><div class="detail-label">outputs</div><div class="io-row"><span class="io-pill out">embeddings/wavlm_base_l6/*.npy</span></div></div>
+</div></div></div>
+
+<div class="arrow">↓</div>
+
+<div class="stage-row">
+<div class="stage-num">03</div>
+<div class="stage-card" onclick="toggleStage(this)">
+<div class="stage-header"><span class="stage-tag tag-feat">.py</span><span class="stage-name">label</span></div>
+<div class="stage-desc">Align tic.csv intervals to 20ms frame indices, emit label_config</div>
+<div class="stage-detail">
+<div class="detail-section"><div class="detail-label">function</div>
+<div class="fn-block"><span class="fn-name">run_label</span>(<span class="param">chunks_csv</span>, <span class="param">embeddings_dir</span>, <span class="param">tic_csv</span>, <span class="param">tic_groups_csv</span>, <span class="param">output_csv</span>, <span class="param">frame_duration_ms</span>=<span class="pval">20</span>, <span class="param">label_strategy</span>=<span class="pval">"majority"</span>, <span class="param">min_overlap_ratio</span>=<span class="pval">0.5</span>, <span class="param">no_tic_label</span>=<span class="pval">-1000</span>)</div></div>
+<div class="detail-section"><div class="detail-label">inputs</div><div class="io-row"><span class="io-pill">tic.csv</span><span class="io-pill">configs/tic_groups.csv</span><span class="io-pill">embeddings/</span></div></div>
+<div class="detail-section"><div class="detail-label">outputs</div><div class="io-row"><span class="io-pill out">meta/frames.csv</span><span class="io-pill out">configs/label_config.json</span></div></div>
+</div></div></div>
+
+<div class="arrow">↓</div>
+
+<div class="stage-row">
+<div class="stage-num">04</div>
+<div class="stage-card" onclick="toggleStage(this)">
+<div class="stage-header"><span class="stage-tag tag-split">.py</span><span class="stage-name">split</span></div>
+<div class="stage-desc">JSD split balancing tic group distribution across train/val/test</div>
+<div class="stage-detail">
+<div class="detail-section"><div class="detail-label">function</div>
+<div class="fn-block"><span class="fn-name">run_split</span>(<span class="param">frames_csv</span>, <span class="param">tic_groups_csv</span>, <span class="param">output_dir</span>, <span class="param">split_strategy</span>=<span class="pval">"jsd"</span>, <span class="param">split_unit</span>=<span class="pval">"tic_group"</span>, <span class="param">ratios</span>=<span class="pval">{train:0.7,val:0.15,test:0.15}</span>, <span class="param">grouping_level</span>=<span class="pval">"file"</span>, <span class="param">allow_patient_overlap</span>=<span class="pval">True</span>, <span class="param">seed</span>=<span class="pval">42</span>)</div></div>
+<div class="detail-section"><div class="detail-label">inputs</div><div class="io-row"><span class="io-pill">meta/frames.csv</span><span class="io-pill">configs/tic_groups.csv</span></div></div>
+<div class="detail-section"><div class="detail-label">outputs</div><div class="io-row"><span class="io-pill out">splits/train.csv</span><span class="io-pill out">splits/val.csv</span><span class="io-pill out">splits/test.csv</span></div></div>
+</div></div></div>
+
+<div class="arrow">↓</div>
+
+<div class="stage-row">
+<div class="stage-num">04b</div>
+<div class="stage-card" onclick="toggleStage(this)">
+<div class="stage-header"><span class="stage-tag tag-split">.py</span><span class="stage-name">filter</span></div>
+<div class="stage-desc">Remove short files from train only, val/test untouched</div>
+<div class="stage-detail">
+<div class="detail-section"><div class="detail-label">function</div>
+<div class="fn-block"><span class="fn-name">run_filter</span>(<span class="param">splits_dir</span>, <span class="param">manifest_csv</span>, <span class="param">output_dir</span>, <span class="param">min_duration_s</span>=<span class="pval">5.0</span>, <span class="param">filter_splits</span>=<span class="pval">["train"]</span>)</div></div>
+<div class="detail-section"><div class="detail-label">inputs</div><div class="io-row"><span class="io-pill">splits/</span><span class="io-pill">meta/manifest.csv</span></div></div>
+<div class="detail-section"><div class="detail-label">outputs</div><div class="io-row"><span class="io-pill out">splits_filtered/train.csv</span><span class="io-pill out">splits_filtered/val.csv</span><span class="io-pill out">splits_filtered/test.csv</span></div></div>
+</div></div></div>
+
+<div class="arrow">↓</div>
+
+<div class="stage-row">
+<div class="stage-num">05</div>
+<div class="stage-card" onclick="toggleStage(this)">
+<div class="stage-header"><span class="stage-tag tag-model">.py</span><span class="stage-name">dataset</span></div>
+<div class="stage-desc">Group frames into BiLSTM sequences, apply normalization</div>
+<div class="stage-detail">
+<div class="detail-section"><div class="detail-label">function</div>
+<div class="fn-block"><span class="fn-name">run_dataset</span>(<span class="param">splits_dir</span>, <span class="param">embeddings_dir</span>, <span class="param">output_dir</span>, <span class="param">sequence_length</span>=<span class="pval">50</span>, <span class="param">stride</span>=<span class="pval">25</span>, <span class="param">boundary_level</span>=<span class="pval">"chunk"</span>, <span class="param">normalize</span>=<span class="pval">True</span>)</div></div>
+<div class="detail-section"><div class="detail-label">inputs</div><div class="io-row"><span class="io-pill">splits_filtered/</span><span class="io-pill">embeddings/</span></div></div>
+<div class="detail-section"><div class="detail-label">outputs</div><div class="io-row"><span class="io-pill out">datasets/train.pt</span><span class="io-pill out">datasets/val.pt</span><span class="io-pill out">datasets/test.pt</span></div></div>
+</div></div></div>
+
+<div class="arrow">↓</div>
+
+<div class="stage-row">
+<div class="stage-num">06</div>
+<div class="stage-card" onclick="toggleStage(this)">
+<div class="stage-header"><span class="stage-tag tag-model">.py</span><span class="stage-name">train</span></div>
+<div class="stage-desc">Training loop with batched sampling strategy and model factory</div>
+<div class="stage-detail">
+<div class="detail-section"><div class="detail-label">function</div>
+<div class="fn-block"><span class="fn-name">run_train</span>(<span class="param">dataset_dir</span>, <span class="param">output_dir</span>, <span class="param">model_cfg</span>, <span class="param">device</span>=<span class="pval">"cuda"</span>)
+
+<span class="y-comment"># model_cfg.model_type → factory picks bilstm / transformer / cnn / cnn_bilstm
+# model_cfg.imbalance_strategy → batched_oversample / batched_undersample / weighted / none</span></div></div>
+<div class="detail-section"><div class="detail-label">inputs</div><div class="io-row"><span class="io-pill">datasets/</span><span class="io-pill">configs/model.yaml</span><span class="io-pill">configs/label_config.json</span></div></div>
+<div class="detail-section"><div class="detail-label">outputs</div><div class="io-row"><span class="io-pill out">runs/exp_01/best.pt</span><span class="io-pill out">runs/exp_01/config.json</span></div></div>
+</div></div></div>
+
+<div class="arrow">↓</div>
+
+<div class="stage-row">
+<div class="stage-num">07</div>
+<div class="stage-card" onclick="toggleStage(this)">
+<div class="stage-header"><span class="stage-tag tag-eval">.py</span><span class="stage-name">eval</span></div>
+<div class="stage-desc">Inference + temporal voting + per-class metrics</div>
+<div class="stage-detail">
+<div class="detail-section"><div class="detail-label">function</div>
+<div class="fn-block"><span class="fn-name">run_eval</span>(<span class="param">dataset_dir</span>, <span class="param">checkpoint</span>, <span class="param">output_dir</span>, <span class="param">split</span>=<span class="pval">"test"</span>, <span class="param">eval_cfg</span>)</div></div>
+<div class="detail-section"><div class="detail-label">inputs</div><div class="io-row"><span class="io-pill">datasets/</span><span class="io-pill">runs/exp_01/best.pt</span><span class="io-pill">configs/eval.yaml</span></div></div>
+<div class="detail-section"><div class="detail-label">outputs</div><div class="io-row"><span class="io-pill out">results/results.json</span><span class="io-pill out">results/confusion_matrix.png</span></div></div>
+</div></div></div>
+
+</div>
+</div>
+
+<!-- DATA FLOW VIEW -->
+<div id="view-flow" class="view">
+<div class="flow-svg-wrap">
+<svg width="100%" viewBox="0 0 680 920" xmlns="http://www.w3.org/2000/svg" style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#555" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arr-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#378ADD" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arr-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#d4973a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arr-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#9b8de8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arr-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#5aad5a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- ── INPUT FILES ── -->
+<!-- raw_audio box -->
+<rect x="40" y="30" width="130" height="44" rx="8" fill="#0c1f2e" stroke="#185FA5" stroke-width="0.5"/>
+<text x="105" y="50" text-anchor="middle" font-size="13" font-weight="500" fill="#5ba3d9">raw_audio/</text>
+<text x="105" y="66" text-anchor="middle" font-size="11" fill="#3a6fa0">.wav · .mp3</text>
+
+<!-- tic.csv box -->
+<rect x="210" y="30" width="110" height="44" rx="8" fill="#0c1f2e" stroke="#185FA5" stroke-width="0.5"/>
+<text x="265" y="50" text-anchor="middle" font-size="13" font-weight="500" fill="#5ba3d9">tic.csv</text>
+<text x="265" y="66" text-anchor="middle" font-size="11" fill="#3a6fa0">annotations</text>
+
+<!-- tic_groups.csv box -->
+<rect x="360" y="30" width="140" height="44" rx="8" fill="#0c1f2e" stroke="#185FA5" stroke-width="0.5"/>
+<text x="430" y="50" text-anchor="middle" font-size="13" font-weight="500" fill="#5ba3d9">tic_groups.csv</text>
+<text x="430" y="66" text-anchor="middle" font-size="11" fill="#3a6fa0">type → group map</text>
+
+<!-- ── STAGE 00: INVENTORY ── -->
+<line x1="105" y1="74" x2="105" y2="108" stroke="#555" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+<line x1="265" y1="74" x2="200" y2="108" stroke="#555" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+<rect x="52" y="112" width="210" height="40" rx="8" fill="#111" stroke="#333" stroke-width="0.5"/>
+<text x="157" y="130" text-anchor="middle" font-size="12" font-weight="500" fill="#aaa">00  inventory</text>
+<text x="157" y="144" text-anchor="middle" font-size="11" fill="#555">validates files, flags short</text>
+
+<!-- manifest.csv -->
+<line x1="157" y1="152" x2="157" y2="178" stroke="#378ADD" stroke-width="0.5" marker-end="url(#arr-blue)"/>
+<rect x="90" y="180" width="134" height="34" rx="6" fill="#061420" stroke="#185FA5" stroke-width="0.5"/>
+<text x="157" y="202" text-anchor="middle" font-size="12" fill="#5ba3d9">meta/manifest.csv</text>
+
+<!-- ── STAGE 01: CHUNK ── -->
+<line x1="157" y1="214" x2="157" y2="240" stroke="#378ADD" stroke-width="0.5" marker-end="url(#arr-blue)"/>
+<!-- raw_audio also feeds chunk -->
+<path d="M105 74 L105 260 Q105 268 113 268 L118 268" fill="none" stroke="#555" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+<rect x="52" y="244" width="210" height="40" rx="8" fill="#111" stroke="#333" stroke-width="0.5"/>
+<text x="157" y="262" text-anchor="middle" font-size="12" font-weight="500" fill="#aaa">01  chunk</text>
+<text x="157" y="276" text-anchor="middle" font-size="11" fill="#555">30s windows · pad last</text>
+
+<!-- chunks/ + audio.yaml outputs -->
+<line x1="157" y1="284" x2="105" y2="310" stroke="#378ADD" stroke-width="0.5" marker-end="url(#arr-blue)"/>
+<line x1="157" y1="284" x2="209" y2="310" stroke="#378ADD" stroke-width="0.5" marker-end="url(#arr-blue)"/>
+<rect x="40" y="312" width="130" height="34" rx="6" fill="#061420" stroke="#185FA5" stroke-width="0.5"/>
+<text x="105" y="334" text-anchor="middle" font-size="12" fill="#5ba3d9">chunks/  ·  chunks.csv</text>
+<rect x="178" y="312" width="114" height="34" rx="6" fill="#1a1008" stroke="#854F0B" stroke-width="0.5"/>
+<text x="235" y="334" text-anchor="middle" font-size="12" fill="#d4973a">configs/audio.yaml</text>
+
+<!-- ── STAGE 02: EXTRACT ── -->
+<line x1="105" y1="346" x2="157" y2="372" stroke="#378ADD" stroke-width="0.5" marker-end="url(#arr-blue)"/>
+<!-- audio.yaml feeds extract -->
+<line x1="235" y1="346" x2="212" y2="372" stroke="#d4973a" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr-amber)"/>
+<rect x="52" y="376" width="210" height="40" rx="8" fill="#111" stroke="#333" stroke-width="0.5"/>
+<text x="157" y="394" text-anchor="middle" font-size="12" font-weight="500" fill="#aaa">02  extract  (WavLM)</text>
+<text x="157" y="408" text-anchor="middle" font-size="11" fill="#555">30s chunk → [T, D] · layer N</text>
+
+<!-- embeddings output -->
+<line x1="157" y1="416" x2="157" y2="442" stroke="#378ADD" stroke-width="0.5" marker-end="url(#arr-blue)"/>
+<rect x="68" y="444" width="178" height="34" rx="6" fill="#061420" stroke="#185FA5" stroke-width="0.5"/>
+<text x="157" y="466" text-anchor="middle" font-size="12" fill="#5ba3d9">embeddings/  [T × D].npy</text>
+
+<!-- ── STAGE 03: LABEL ── -->
+<line x1="157" y1="478" x2="157" y2="504" stroke="#378ADD" stroke-width="0.5" marker-end="url(#arr-blue)"/>
+<!-- tic.csv feeds label -->
+<path d="M265 74 L265 510 Q265 518 257 518 L290 518" fill="none" stroke="#555" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+<!-- tic_groups.csv feeds label -->
+<path d="M430 74 L430 510 Q430 518 422 518 L310 518" fill="none" stroke="#555" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+<rect x="52" y="508" width="210" height="40" rx="8" fill="#111" stroke="#333" stroke-width="0.5"/>
+<text x="157" y="526" text-anchor="middle" font-size="12" font-weight="500" fill="#aaa">03  label</text>
+<text x="157" y="540" text-anchor="middle" font-size="11" fill="#555">20ms frames · tic alignment</text>
+
+<!-- frames.csv + label_config outputs -->
+<line x1="157" y1="548" x2="105" y2="574" stroke="#378ADD" stroke-width="0.5" marker-end="url(#arr-blue)"/>
+<line x1="157" y1="548" x2="209" y2="574" stroke="#5aad5a" stroke-width="0.5" marker-end="url(#arr-green)"/>
+<rect x="34" y="576" width="142" height="34" rx="6" fill="#061420" stroke="#185FA5" stroke-width="0.5"/>
+<text x="105" y="598" text-anchor="middle" font-size="12" fill="#5ba3d9">meta/frames.csv</text>
+<rect x="182" y="576" width="140" height="34" rx="6" fill="#081408" stroke="#3B6D11" stroke-width="0.5"/>
+<text x="252" y="598" text-anchor="middle" font-size="12" fill="#5aad5a">label_config.json</text>
+
+<!-- ── STAGE 04: SPLIT ── -->
+<line x1="105" y1="610" x2="157" y2="636" stroke="#378ADD" stroke-width="0.5" marker-end="url(#arr-blue)"/>
+<!-- tic_groups also feeds split -->
+<path d="M430 74 L560 74 L560 640 L290 640" fill="none" stroke="#555" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+<rect x="52" y="640" width="210" height="40" rx="8" fill="#111" stroke="#333" stroke-width="0.5"/>
+<text x="157" y="658" text-anchor="middle" font-size="12" font-weight="500" fill="#aaa">04 → 04b  split + filter</text>
+<text x="157" y="672" text-anchor="middle" font-size="11" fill="#555">JSD by tic group · drop short</text>
+
+<!-- train/val/test outputs -->
+<line x1="157" y1="680" x2="80" y2="706" stroke="#d4973a" stroke-width="0.5" marker-end="url(#arr-amber)"/>
+<line x1="157" y1="680" x2="157" y2="706" stroke="#d4973a" stroke-width="0.5" marker-end="url(#arr-amber)"/>
+<line x1="157" y1="680" x2="234" y2="706" stroke="#d4973a" stroke-width="0.5" marker-end="url(#arr-amber)"/>
+<rect x="32" y="708" width="96" height="30" rx="6" fill="#181008" stroke="#854F0B" stroke-width="0.5"/>
+<text x="80" y="728" text-anchor="middle" font-size="12" fill="#d4973a">train.csv</text>
+<rect x="108" y="708" width="96" height="30" rx="6" fill="#181008" stroke="#854F0B" stroke-width="0.5"/>
+<text x="156" y="728" text-anchor="middle" font-size="12" fill="#d4973a">val.csv</text>
+<rect x="186" y="708" width="96" height="30" rx="6" fill="#181008" stroke="#854F0B" stroke-width="0.5"/>
+<text x="234" y="728" text-anchor="middle" font-size="12" fill="#d4973a">test.csv</text>
+
+<!-- ── STAGE 05: DATASET ── -->
+<line x1="80" y1="738" x2="130" y2="764" stroke="#d4973a" stroke-width="0.5" marker-end="url(#arr-amber)"/>
+<line x1="157" y1="738" x2="157" y2="764" stroke="#d4973a" stroke-width="0.5" marker-end="url(#arr-amber)"/>
+<line x1="234" y1="738" x2="184" y2="764" stroke="#d4973a" stroke-width="0.5" marker-end="url(#arr-amber)"/>
+<!-- embeddings also feed dataset -->
+<path d="M157 478 L340 478 L340 780 L290 780" fill="none" stroke="#555" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+<rect x="52" y="768" width="210" height="40" rx="8" fill="#111" stroke="#333" stroke-width="0.5"/>
+<text x="157" y="786" text-anchor="middle" font-size="12" font-weight="500" fill="#aaa">05  dataset</text>
+<text x="157" y="800" text-anchor="middle" font-size="11" fill="#555">sequences [L×D] · normalize</text>
+
+<!-- .pt outputs -->
+<line x1="157" y1="808" x2="157" y2="834" stroke="#9b8de8" stroke-width="0.5" marker-end="url(#arr-purple)"/>
+<rect x="70" y="836" width="174" height="34" rx="6" fill="#110e20" stroke="#534AB7" stroke-width="0.5"/>
+<text x="157" y="858" text-anchor="middle" font-size="12" fill="#9b8de8">train.pt · val.pt · test.pt</text>
+
+<!-- ── STAGE 06-07: TRAIN + EVAL ── -->
+<line x1="157" y1="870" x2="157" y2="890" stroke="#9b8de8" stroke-width="0.5" marker-end="url(#arr-purple)"/>
+<rect x="52" y="876" width="210" height="40" rx="8" fill="#111" stroke="#333" stroke-width="0.5"/>
+<text x="157" y="893" text-anchor="middle" font-size="12" font-weight="500" fill="#aaa">06 → 07  train + eval</text>
+<text x="157" y="907" text-anchor="middle" font-size="11" fill="#555">BiLSTM · batched sampler · AUROC</text>
+
+<!-- Legend -->
+<rect x="380" y="200" width="270" height="200" rx="10" fill="#0d0d0d" stroke="#222" stroke-width="0.5"/>
+<text x="400" y="224" font-size="12" font-weight="500" fill="#888">legend</text>
+<line x1="400" y1="246" x2="440" y2="246" stroke="#378ADD" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+<text x="450" y="250" font-size="12" fill="#666">main data flow</text>
+<line x1="400" y1="274" x2="440" y2="274" stroke="#555" stroke-width="0.5" stroke-dasharray="3 3" marker-end="url(#arr)"/>
+<text x="450" y="278" font-size="12" fill="#666">config / annotation input</text>
+<line x1="400" y1="302" x2="440" y2="302" stroke="#d4973a" stroke-width="1.5" marker-end="url(#arr-amber)"/>
+<text x="450" y="306" font-size="12" fill="#666">split assignment</text>
+<line x1="400" y1="330" x2="440" y2="330" stroke="#9b8de8" stroke-width="1.5" marker-end="url(#arr-purple)"/>
+<text x="450" y="334" font-size="12" fill="#666">model-ready tensors</text>
+<line x1="400" y1="358" x2="440" y2="358" stroke="#5aad5a" stroke-width="1.5" marker-end="url(#arr-green)"/>
+<text x="450" y="362" font-size="12" fill="#666">label schema</text>
+</svg>
+</div>
+</div>
+
+<!-- FILES VIEW -->
+<div id="view-files" class="view">
+<div class="files-grid" id="files-grid">
+<div class="file-card" onclick="selectFile(this,'s00')"><span class="file-icon icon-py">.py</span><div class="file-name">s00_inventory.py</div><div class="file-role">stages/</div></div>
+<div class="file-card" onclick="selectFile(this,'s01')"><span class="file-icon icon-py">.py</span><div class="file-name">s01_chunk.py</div><div class="file-role">stages/</div></div>
+<div class="file-card" onclick="selectFile(this,'s02')"><span class="file-icon icon-py">.py</span><div class="file-name">s02_extract.py</div><div class="file-role">stages/</div></div>
+<div class="file-card" onclick="selectFile(this,'s03')"><span class="file-icon icon-py">.py</span><div class="file-name">s03_label.py</div><div class="file-role">stages/</div></div>
+<div class="file-card" onclick="selectFile(this,'s04')"><span class="file-icon icon-py">.py</span><div class="file-name">s04_split.py</div><div class="file-role">stages/</div></div>
+<div class="file-card" onclick="selectFile(this,'s04b')"><span class="file-icon icon-py">.py</span><div class="file-name">s04b_filter.py</div><div class="file-role">stages/</div></div>
+<div class="file-card" onclick="selectFile(this,'s05')"><span class="file-icon icon-py">.py</span><div class="file-name">s05_dataset.py</div><div class="file-role">stages/</div></div>
+<div class="file-card" onclick="selectFile(this,'s06')"><span class="file-icon icon-py">.py</span><div class="file-name">s06_train.py</div><div class="file-role">stages/</div></div>
+<div class="file-card" onclick="selectFile(this,'s07')"><span class="file-icon icon-py">.py</span><div class="file-name">s07_eval.py</div><div class="file-role">stages/</div></div>
+<div class="file-card" onclick="selectFile(this,'base')"><span class="file-icon icon-py">.py</span><div class="file-name">base.py</div><div class="file-role">models/</div></div>
+<div class="file-card" onclick="selectFile(this,'bilstm')"><span class="file-icon icon-py">.py</span><div class="file-name">bilstm.py</div><div class="file-role">models/</div></div>
+<div class="file-card" onclick="selectFile(this,'factory')"><span class="file-icon icon-py">.py</span><div class="file-name">factory.py</div><div class="file-role">models/</div></div>
+<div class="file-card" onclick="selectFile(this,'sampler')"><span class="file-icon icon-py">.py</span><div class="file-name">sampler.py</div><div class="file-role">utils/</div></div>
+<div class="file-card" onclick="selectFile(this,'audio_u')"><span class="file-icon icon-py">.py</span><div class="file-name">audio.py</div><div class="file-role">utils/</div></div>
+<div class="file-card" onclick="selectFile(this,'embeddings_u')"><span class="file-icon icon-py">.py</span><div class="file-name">embeddings.py</div><div class="file-role">utils/</div></div>
+<div class="file-card" onclick="selectFile(this,'labels_u')"><span class="file-icon icon-py">.py</span><div class="file-name">labels.py</div><div class="file-role">utils/</div></div>
+<div class="file-card" onclick="selectFile(this,'metrics_u')"><span class="file-icon icon-py">.py</span><div class="file-name">metrics.py</div><div class="file-role">utils/</div></div>
+<div class="file-card" onclick="selectFile(this,'io_u')"><span class="file-icon icon-py">.py</span><div class="file-name">io.py</div><div class="file-role">utils/</div></div>
+<div class="file-card" onclick="selectFile(this,'cli')"><span class="file-icon icon-py">.py</span><div class="file-name">cli.py</div><div class="file-role">root</div></div>
+<div class="file-card" onclick="selectFile(this,'pipeline')"><span class="file-icon icon-sh">.sh</span><div class="file-name">run_pipeline.sh</div><div class="file-role">root</div></div>
+</div>
+<div id="file-detail" style="display:none;margin-top:14px"></div>
+</div>
+
+<!-- CONFIGS VIEW -->
+<div id="view-configs" class="view">
+<div class="cfg-grid">
+<div class="cfg-card" onclick="selectCfg(this,'audio')"><div class="cfg-name">audio.yaml</div><div class="cfg-role">Written by stage 01. Read by 02 and 03. Never edit manually.</div></div>
+<div class="cfg-card" onclick="selectCfg(this,'split')"><div class="cfg-name">split.yaml</div><div class="cfg-role">Split strategy, ratios, grouping, patient overlap, filter thresholds.</div></div>
+<div class="cfg-card" onclick="selectCfg(this,'model')"><div class="cfg-name">model.yaml</div><div class="cfg-role">Architecture, imbalance strategy, sequence params, training hyperparams.</div></div>
+<div class="cfg-card" onclick="selectCfg(this,'eval')"><div class="cfg-name">eval.yaml</div><div class="cfg-role">Voting, metrics, thresholds, which split to evaluate.</div></div>
+<div class="cfg-card" onclick="selectCfg(this,'ticgroups')"><div class="cfg-name">tic_groups.csv</div><div class="cfg-role">Global lookup: tic_type → tic_group. Used in stages 03 and 04.</div></div>
+</div>
+<div id="cfg-detail" style="display:none;margin-top:14px"></div>
+</div>
+
+</div>
+<script>
+const fileData={
+  s00:{name:"s00_inventory.py",dir:"stages/",fns:["run_inventory(audio_dir, tic_csv, output_dir, min_duration_s)  →  manifest.csv","_validate_audio_files(audio_dir, manifest)  →  list of missing files","_check_tic_csv(tic_csv)  →  validated DataFrame","_flag_short_files(manifest, min_duration_s)  →  filtered manifest"]},
+  s01:{name:"s01_chunk.py",dir:"stages/",fns:["run_chunk(audio_dir, manifest_csv, output_dir, chunk_duration_s, stride_s, pad_last)  →  chunks.csv + audio.yaml","_chunk_file(filepath, chunk_duration_s, stride_s, pad_last)  →  list of chunk paths","_write_audio_config(output_dir, cfg)  →  configs/audio.yaml"]},
+  s02:{name:"s02_extract.py",dir:"stages/",fns:["run_extract(chunks_csv, chunks_dir, output_dir, model, layer, batch_size, device)  →  *.npy per chunk","_load_wavlm(model_name, layer, device)  →  model","_extract_batch(model, batch_paths)  →  List[np.ndarray [T,D]]","_save_embeddings(arr, path)"]},
+  s03:{name:"s03_label.py",dir:"stages/",fns:["run_label(chunks_csv, embeddings_dir, tic_csv, tic_groups_csv, output_csv, frame_duration_ms, label_strategy, min_overlap_ratio, no_tic_label)  →  frames.csv + label_config.json","_align_frame_to_tic(frame_start, frame_end, tic_intervals, strategy, min_overlap)  →  label","_build_label_config(frames_df, tic_groups)  →  dict","_write_label_config(cfg, output_dir)"]},
+  s04:{name:"s04_split.py",dir:"stages/",fns:["run_split(frames_csv, tic_groups_csv, output_dir, split_strategy, split_unit, ratios, grouping_level, allow_patient_overlap, seed)  →  train/val/test.csv","_jsd_split(file_group_matrix, ratios, seed)  →  file→split mapping","_random_split(files, ratios, seed)  →  file→split mapping","_stratified_split(files, labels, ratios, seed)  →  file→split mapping","_enforce_patient_constraint(split_map, patient_map)  →  corrected split_map"]},
+  s04b:{name:"s04b_filter.py",dir:"stages/",fns:["run_filter(splits_dir, manifest_csv, output_dir, min_duration_s, filter_splits)  →  filtered CSVs","_filter_split(split_csv, manifest, min_duration_s)  →  filtered DataFrame"]},
+  s05:{name:"s05_dataset.py",dir:"stages/",fns:["run_dataset(splits_dir, embeddings_dir, output_dir, sequence_length, stride, boundary_level, normalize)  →  train/val/test.pt","_build_sequences(frames_df, embeddings_dir, sequence_length, stride, boundary_level)  →  List[(seq_tensor, label_tensor)]","_compute_normalization_stats(train_sequences)  →  mean, std","_normalize_sequences(sequences, mean, std)  →  normalized sequences"]},
+  s06:{name:"s06_train.py",dir:"stages/",fns:["run_train(dataset_dir, output_dir, model_cfg, device)  →  best.pt + config.json","_build_dataloader(dataset, imbalance_strategy, cfg)  →  DataLoader","_train_epoch(model, loader, optimizer, criterion)  →  loss","_val_epoch(model, loader, criterion)  →  loss, metrics","_save_checkpoint(model, path)","_save_run_config(cfg, output_dir)"]},
+  s07:{name:"s07_eval.py",dir:"stages/",fns:["run_eval(dataset_dir, checkpoint, output_dir, split, eval_cfg)  →  results.json + confusion_matrix.png","_load_checkpoint(path, model_cfg)  →  model","_run_inference(model, loader)  →  predictions, probabilities","_apply_voting(predictions, window, strategy)  →  smoothed predictions","_compute_all_metrics(preds, labels, label_config, per_class)  →  dict","_save_results(metrics, output_dir)"]},
+  base:{name:"base.py",dir:"models/",fns:["class BaseClassifier(nn.Module)  —  abstract","forward(x)  →  logits  [abstract]","predict(x)  →  class indices","predict_proba(x)  →  probabilities","save(path)","load(path)  [classmethod]"]},
+  bilstm:{name:"bilstm.py",dir:"models/",fns:["class BiLSTMClassifier(BaseClassifier)","__init__(input_dim, hidden_size, num_layers, dropout, num_classes)","forward(x)  →  logits  [T, num_classes]"]},
+  factory:{name:"factory.py",dir:"models/",fns:["get_model(model_type, cfg, num_classes, input_dim)  →  BaseClassifier","  model_type: bilstm | transformer | cnn | cnn_bilstm"]},
+  sampler:{name:"sampler.py",dir:"utils/",fns:["class BatchedOversampleSampler(Sampler)","  __init__(dataset, minority_ratio_per_batch, replacement)","  __iter__()  →  batch indices with oversampled minority","class BatchedUndersampleSampler(Sampler)","  __init__(dataset, minority_ratio_per_batch, reshuffle_per_epoch)","  __iter__()  →  batch indices with undersampled majority"]},
+  audio_u:{name:"audio.py",dir:"utils/",fns:["load_audio(path, sr)  →  waveform, sample_rate","chunk_audio(waveform, sr, chunk_duration_s, stride_s)  →  List[waveform]","pad_chunk(waveform, target_length, strategy)  →  padded waveform"]},
+  embeddings_u:{name:"embeddings.py",dir:"utils/",fns:["load_model(model_name, layer, device)  →  model","extract_embeddings(model, waveform, device)  →  np.ndarray [T, D]","save_embeddings(arr, path)","load_embeddings(path)  →  np.ndarray [T, D]"]},
+  labels_u:{name:"labels.py",dir:"utils/",fns:["assign_labels(frame_intervals, tic_intervals, strategy, min_overlap_ratio, no_tic_label)  →  label array","load_tic_groups(tic_groups_csv)  →  dict[tic_type → tic_group]","build_label_config(frames_df, tic_groups)  →  dict","map_types_to_groups(tic_type_series, tic_groups)  →  tic_group_series"]},
+  metrics_u:{name:"metrics.py",dir:"utils/",fns:["compute_auroc(y_true, y_prob, per_class)  →  dict","compute_f1(y_true, y_pred, per_class)  →  dict","apply_voting(predictions, window, strategy)  →  smoothed predictions","per_class_metrics(y_true, y_pred, label_config)  →  DataFrame"]},
+  io_u:{name:"io.py",dir:"utils/",fns:["load_csv(path)  →  DataFrame","save_csv(df, path)","load_config(path)  →  dict  [yaml or json]","save_config(cfg, path)","load_pt(path)  →  Any","save_pt(obj, path)"]},
+  cli:{name:"cli.py",dir:"root",fns:["main()  —  Hydra entry point","  subcommands: inventory | chunk | extract | label | split | filter | dataset | train | eval | pipeline"]},
+  pipeline:{name:"run_pipeline.sh",dir:"root",fns:["Full end-to-end run","Calls stages 00→07 in order","Wires output dirs between stages","Single script to reproduce an experiment from scratch"]}
+};
+const cfgData={
+  audio:{name:"audio.yaml",content:`<span class="y-key">chunk_duration_s</span>: <span class="y-val">30</span>       <span class="y-comment2"># max WavLM input length</span>\n<span class="y-key">stride_s</span>: <span class="y-val">30</span>           <span class="y-comment2"># no overlap between chunks</span>\n<span class="y-key">frame_duration_ms</span>: <span class="y-val">20</span>  <span class="y-comment2"># WavLM output frame size</span>\n<span class="y-key">padding_strategy</span>: <span class="y-val">zero</span>  <span class="y-comment2"># zero | reflect | edge</span>\n\n<span class="y-comment2"># written once by stage 01, never edit manually</span>\n<span class="y-comment2"># read by stages 02 and 03</span>`},
+  split:{name:"split.yaml",content:`<span class="y-key">split_strategy</span>: <span class="y-val">jsd</span>         <span class="y-comment2"># jsd | random | stratified</span>\n<span class="y-key">split_unit</span>: <span class="y-val">tic_group</span>      <span class="y-comment2"># tic_group | tic_type</span>\n<span class="y-key">ratios</span>:\n  <span class="y-key">train</span>: <span class="y-val">0.70</span>\n  <span class="y-key">val</span>: <span class="y-val">0.15</span>\n  <span class="y-key">test</span>: <span class="y-val">0.15</span>\n<span class="y-key">grouping_level</span>: <span class="y-val">file</span>        <span class="y-comment2"># file | session | patient</span>\n<span class="y-key">allow_patient_overlap</span>: <span class="y-val">true</span>\n<span class="y-key">seed</span>: <span class="y-val">42</span>\n\n<span class="y-key">filter</span>:\n  <span class="y-key">min_duration_s</span>: <span class="y-val">5.0</span>\n  <span class="y-key">filter_splits</span>: [<span class="y-val">train</span>]    <span class="y-comment2"># val/test never filtered</span>`},
+  model:{name:"model.yaml",content:`<span class="y-key">sequence_length</span>: <span class="y-val">50</span>\n<span class="y-key">sequence_stride</span>: <span class="y-val">25</span>\n<span class="y-key">boundary_level</span>: <span class="y-val">chunk</span>\n<span class="y-key">normalize</span>: <span class="y-val">true</span>\n\n<span class="y-key">imbalance_strategy</span>: <span class="y-val">batched_oversample</span>\n<span class="y-comment2"># batched_oversample | batched_undersample | weighted | none</span>\n<span class="y-key">batched_oversample</span>:\n  <span class="y-key">minority_ratio_per_batch</span>: <span class="y-val">0.3</span>\n  <span class="y-key">replacement</span>: <span class="y-val">true</span>\n<span class="y-key">batched_undersample</span>:\n  <span class="y-key">minority_ratio_per_batch</span>: <span class="y-val">0.3</span>\n  <span class="y-key">reshuffle_per_epoch</span>: <span class="y-val">true</span>\n<span class="y-key">weighted</span>:\n  <span class="y-key">strategy</span>: <span class="y-val">inverse_frequency</span>\n\n<span class="y-key">model_type</span>: <span class="y-val">bilstm</span>  <span class="y-comment2"># bilstm | transformer | cnn | cnn_bilstm</span>\n<span class="y-key">bilstm</span>:\n  <span class="y-key">hidden_size</span>: <span class="y-val">256</span>\n  <span class="y-key">num_layers</span>: <span class="y-val">2</span>\n  <span class="y-key">dropout</span>: <span class="y-val">0.3</span>\n\n<span class="y-key">epochs</span>: <span class="y-val">50</span>\n<span class="y-key">batch_size</span>: <span class="y-val">32</span>\n<span class="y-key">lr</span>: <span class="y-val">1e-3</span>\n<span class="y-key">scheduler</span>: <span class="y-val">cosine</span>  <span class="y-comment2"># cosine | step | plateau | none</span>`},
+  eval:{name:"eval.yaml",content:`<span class="y-key">split</span>: <span class="y-val">test</span>                  <span class="y-comment2"># train | val | test</span>\n<span class="y-key">voting_window</span>: <span class="y-val">5</span>             <span class="y-comment2"># 1 = no voting</span>\n<span class="y-key">voting_strategy</span>: <span class="y-val">majority</span>    <span class="y-comment2"># majority | mean_prob | none</span>\n<span class="y-key">metrics</span>: [<span class="y-val">auroc</span>, <span class="y-val">f1</span>, <span class="y-val">precision</span>, <span class="y-val">recall</span>, <span class="y-val">confusion_matrix</span>]\n<span class="y-key">per_class</span>: <span class="y-val">true</span>\n<span class="y-key">threshold</span>: <span class="y-val">0.5</span>\n<span class="y-key">save_predictions</span>: <span class="y-val">true</span>`},
+  ticgroups:{name:"tic_groups.csv",content:`tic_type,tic_group\neye_blink,motor\nhead_jerk,motor\nthroat_clear,vocal\nsniff,vocal\ngrunt,vocal\n\n<span class="y-comment2"># global lookup used by stages 03 and 04\n# edit here when tic taxonomy changes\n# CSV format for non-technical annotators</span>`}
+};
+function showView(v,btn){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(el=>el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleStage(card){
+  const detail=card.querySelector('.stage-detail');
+  const isOpen=detail.classList.contains('open');
+  document.querySelectorAll('.stage-detail.open').forEach(d=>d.classList.remove('open'));
+  document.querySelectorAll('.stage-card.active').forEach(c=>c.classList.remove('active'));
+  if(!isOpen){detail.classList.add('open');card.classList.add('active')}
+}
+function selectFile(card,key){
+  document.querySelectorAll('.file-card').forEach(c=>c.classList.remove('active'));
+  card.classList.add('active');
+  const d=fileData[key];
+  const det=document.getElementById('file-detail');
+  det.style.display='block';
+  det.innerHTML=`<div class="file-detail"><h3>${d.dir}${d.name}</h3><div class="fn-list">${d.fns.map(f=>`<div class="fn-item">${f}</div>`).join('')}</div></div>`;
+}
+function selectCfg(card,key){
+  document.querySelectorAll('.cfg-card').forEach(c=>c.classList.remove('active'));
+  card.classList.add('active');
+  const d=cfgData[key];
+  const det=document.getElementById('cfg-detail');
+  det.style.display='block';
+  det.innerHTML=`<div class="cfg-detail"><div class="yaml-block">${d.content}</div></div>`;
+}
+</script>
+</body>
+</html>
