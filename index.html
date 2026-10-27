@@ -4,894 +4,1177 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Khushang Zaveri — AI/ML Engineer</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@300;400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
 <style>
-  :root {
-    --bg: #0d1117;
-    --surface: #161b22;
-    --surface2: #1c2330;
-    --border: #2d333b;
-    --text: #e6edf3;
-    --muted: #7d8590;
-    --accent: #58a6ff;
-    --accent-green: #3fb950;
-    --accent-orange: #f0883e;
-    --accent-purple: #bc8cff;
-    --tag-bg: #1c2330;
-    --sidebar: #010409;
-    --sidebar-width: 240px;
-    --card-bg: #161b22;
-    --card-hover: #1c2330;
+:root {
+  --bg:#0d1117;
+  --surface:#161b22;
+  --surface2:#1c2330;
+  --border:#2d333b;
+  --text:#e6edf3;
+  --muted:#7d8590;
+  --accent:#58a6ff;
+  --accent-green:#3fb950;
+  --accent-orange:#f0883e;
+  --accent-purple:#bc8cff;
+  --sidebar:#010409;
+  --sidebar-width:240px;
+}
+
+*,*::before,*::after {
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html { scroll-behavior:smooth; }
+
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:'IBM Plex Sans',sans-serif;
+  font-weight:300;
+  line-height:1.7;
+  display:flex;
+  min-height:100vh;
+}
+
+.sidebar {
+  width:var(--sidebar-width);
+  background:var(--sidebar);
+  border-right:1px solid var(--border);
+  position:fixed;
+  top:0;
+  left:0;
+  bottom:0;
+  padding:2rem 0;
+  z-index:100;
+}
+
+.sidebar-profile {
+  padding:0 1.25rem 1.5rem;
+  border-bottom:1px solid var(--border);
+  margin-bottom:1rem;
+}
+
+.avatar {
+  width:48px;
+  height:48px;
+  background:linear-gradient(135deg,#58a6ff,#bc8cff);
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Lora',serif;
+  font-size:1.3rem;
+  color:white;
+  margin-bottom:.75rem;
+  font-style:italic;
+}
+
+.sidebar-name {
+  font-size:.875rem;
+  font-weight:500;
+}
+
+.sidebar-role {
+  font-size:.72rem;
+  color:var(--muted);
+}
+
+.sidebar-nav {
+  padding:0 .5rem;
+}
+
+.nav-section-label {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.6rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+  padding:.5rem .75rem .25rem;
+  margin-top:.5rem;
+}
+
+.nav-item {
+  display:flex;
+  gap:.6rem;
+  padding:.35rem .75rem;
+  border-radius:6px;
+  font-size:.825rem;
+  color:var(--muted);
+  text-decoration:none;
+}
+
+.nav-item:hover {
+  background:var(--surface2);
+  color:var(--text);
+}
+
+.main {
+  margin-left:var(--sidebar-width);
+  flex:1;
+  max-width:880px;
+  padding:4rem 5rem;
+}
+
+.hero {
+  margin-bottom:3.5rem;
+  padding-bottom:3rem;
+  border-bottom:1px solid var(--border);
+}
+
+.hero-cover {
+  height:130px;
+  background:linear-gradient(135deg,#0d1f3c,#1a1040 40%,#0d2618);
+  border-radius:12px;
+  margin-bottom:-1.5rem;
+}
+
+.hero-avatar {
+  width:72px;
+  height:72px;
+  background:linear-gradient(135deg,#58a6ff,#bc8cff);
+  border-radius:14px;
+  border:3px solid var(--bg);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Lora',serif;
+  font-size:1.8rem;
+  color:white;
+  font-style:italic;
+  margin-bottom:1rem;
+}
+
+.hero-name {
+  font-family:'Lora',serif;
+  font-size:2.25rem;
+  margin-bottom:.5rem;
+}
+
+.hero-tagline {
+  font-size:.95rem;
+  color:var(--muted);
+  margin-bottom:1.25rem;
+  max-width:600px;
+}
+
+.hero-chips {
+  display:flex;
+  flex-wrap:wrap;
+  gap:.5rem;
+  margin-bottom:1.5rem;
+}
+
+.chip {
+  padding:.3rem .75rem;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:20px;
+  font-size:.78rem;
+  color:var(--muted);
+}
+
+.chip-dot {
+  display:inline-block;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  margin-right:5px;
+}
+
+.hero-links {
+  display:flex;
+  gap:.75rem;
+  flex-wrap:wrap;
+}
+
+.hero-link {
+  padding:.45rem 1rem;
+  border-radius:7px;
+  font-size:.8rem;
+  text-decoration:none;
+  border:1px solid var(--border);
+}
+
+.hero-link-primary {
+  background:var(--accent);
+  color:#000;
+}
+
+.hero-link-secondary {
+  background:var(--surface2);
+  color:var(--text);
+}
+
+.section {
+  margin-bottom:3.5rem;
+}
+
+.section-header {
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  margin-bottom:1.25rem;
+}
+
+.section-title {
+  font-family:'Lora',serif;
+  font-size:1.1rem;
+}
+
+.section-divider {
+  flex:1;
+  height:1px;
+  background:var(--border);
+}
+
+/* EXPERIENCE */
+
+.exp-card {
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+  margin-bottom:.75rem;
+  background:var(--surface);
+}
+
+.exp-toggle {
+  display:none;
+}
+
+.exp-card-header {
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:1rem;
+  padding:1.25rem 1.5rem;
+  cursor:pointer;
+}
+
+.exp-card-header:hover {
+  background:var(--surface2);
+}
+
+.exp-card-body {
+  padding:0;
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .3s ease,padding .3s ease;
+}
+
+.exp-toggle:checked ~ .exp-card-body {
+  max-height:1500px;
+  padding:.25rem 1.5rem 1.25rem;
+}
+
+.exp-toggle:checked ~ .exp-card-header .toggle-arrow {
+  transform:rotate(90deg);
+}
+
+.exp-org-row {
+  margin-bottom:.3rem;
+}
+
+.org-badge {
+  font-size:.68rem;
+  font-weight:500;
+  padding:.15rem .55rem;
+  border-radius:4px;
+}
+
+.badge-blue {
+  background:rgba(88,166,255,.15);
+  color:#58a6ff;
+}
+
+.badge-green {
+  background:rgba(63,185,80,.12);
+  color:#3fb950;
+}
+
+.badge-orange {
+  background:rgba(240,136,62,.12);
+  color:#f0883e;
+}
+
+.badge-purple {
+  background:rgba(188,140,255,.12);
+  color:#bc8cff;
+}
+
+.exp-title-text {
+  font-size:.925rem;
+  font-weight:500;
+}
+
+.exp-period {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.65rem;
+  color:var(--muted);
+}
+
+.toggle-arrow {
+  font-size:.65rem;
+  color:var(--muted);
+  transition:transform .2s;
+}
+
+.exp-bullets {
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:.45rem;
+}
+
+.exp-bullets li {
+  font-size:.865rem;
+  color:#8b949e;
+  padding-left:1.25rem;
+  position:relative;
+}
+
+.exp-bullets li::before {
+  content:'–';
+  position:absolute;
+  left:0;
+  color:var(--accent);
+}
+
+.exp-details {
+  margin-top:1rem;
+  border-top:1px solid var(--border);
+  padding-top:1rem;
+}
+
+.exp-details summary {
+  cursor:pointer;
+  list-style:none;
+  display:inline-flex;
+  padding:.4rem .9rem;
+  background:rgba(88,166,255,.08);
+  border:1px solid rgba(88,166,255,.25);
+  border-radius:6px;
+  font-size:.775rem;
+  color:var(--accent);
+}
+
+.exp-details-body {
+  margin-top:1rem;
+  font-size:.875rem;
+  color:#8b949e;
+}
+
+.exp-details-body p {
+  margin-bottom:.85rem;
+}
+
+/* PROJECTS */
+
+.proj-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.75rem;
+}
+
+.proj-card {
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1.5rem;
+  background:var(--surface);
+}
+
+.proj-card-title {
+  font-size:.925rem;
+  font-weight:500;
+  margin-bottom:.5rem;
+}
+
+.proj-card-desc {
+  font-size:.825rem;
+  color:var(--muted);
+  margin-bottom:.75rem;
+}
+
+.tag {
+  display:inline-block;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.62rem;
+  padding:.2rem .5rem;
+  border-radius:4px;
+  margin:2px;
+}
+
+/* SKILLS */
+
+.skills-table {
+  border:1px solid var(--border);
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.skills-row {
+  display:grid;
+  grid-template-columns:200px 1fr;
+  border-bottom:1px solid var(--border);
+}
+
+.skills-cat {
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.7rem;
+  color:var(--muted);
+  padding:.9rem 1.25rem;
+  border-right:1px solid var(--border);
+}
+
+.skills-pills {
+  padding:.75rem 1.25rem;
+}
+
+.skill-pill {
+  display:inline-block;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  color:#8b949e;
+  font-size:.78rem;
+  padding:.25rem .65rem;
+  border-radius:5px;
+  margin:2px;
+}
+
+@media(max-width:900px) {
+  .sidebar { display:none; }
+  .main {
+    margin-left:0;
+    padding:2rem 1.5rem;
   }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.7;
-    display: flex;
-    min-height: 100vh;
-  }
-
-  .sidebar {
-    width: var(--sidebar-width);
-    background: var(--sidebar);
-    border-right: 1px solid var(--border);
-    position: fixed;
-    top: 0; left: 0; bottom: 0;
-    display: flex;
-    flex-direction: column;
-    padding: 2rem 0;
-    z-index: 100;
-    overflow-y: auto;
-  }
-
-  .sidebar-profile {
-    padding: 0 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 1rem;
-  }
-
-  .avatar {
-    width: 48px; height: 48px;
-    background: linear-gradient(135deg, #58a6ff, #bc8cff);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Lora', serif;
-    font-size: 1.3rem;
-    color: white;
-    margin-bottom: 0.75rem;
-    font-style: italic;
-  }
-
-  .sidebar-name { font-size: 0.875rem; font-weight: 500; color: var(--text); margin-bottom: 0.15rem; }
-  .sidebar-role { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
-  .sidebar-nav { flex: 1; padding: 0 0.5rem; }
-
-  .nav-section-label {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    padding: 0.5rem 0.75rem 0.25rem;
-    margin-top: 0.5rem;
-  }
-
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.35rem 0.75rem;
-    border-radius: 6px;
-    font-size: 0.825rem;
-    color: var(--muted);
-    text-decoration: none;
-    transition: all 0.15s;
-  }
-
-  .nav-item:hover, .nav-item.active { background: var(--surface2); color: var(--text); }
-  .nav-icon { font-size: 0.9rem; width: 1.1rem; text-align: center; }
-
-  .sidebar-footer { padding: 1rem 1.25rem 0; border-top: 1px solid var(--border); }
-
-  .availability-badge {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(63,185,80,0.1);
-    border: 1px solid rgba(63,185,80,0.3);
-    border-radius: 6px;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.72rem;
-    color: var(--accent-green);
-    font-weight: 500;
-  }
-
-  .dot {
-    width: 6px; height: 6px;
-    background: var(--accent-green);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-    flex-shrink: 0;
-  }
-
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-  .main { margin-left: var(--sidebar-width); flex: 1; max-width: 880px; padding: 4rem 5rem; }
-
-  /* HERO */
-  .hero { margin-bottom: 3.5rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
-
-  .hero-cover {
-    height: 130px;
-    background: linear-gradient(135deg, #0d1f3c 0%, #1a1040 40%, #0d2618 100%);
-    border-radius: 12px;
-    margin-bottom: -1.5rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-cover::before {
-    content: '';
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse at 20% 50%, rgba(88,166,255,0.15) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 30%, rgba(188,140,255,0.12) 0%, transparent 50%);
-  }
-
-  .cover-grid {
-    position: absolute; inset: 0;
-    background-image: linear-gradient(rgba(88,166,255,0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(88,166,255,0.05) 1px, transparent 1px);
-    background-size: 30px 30px;
-  }
-
-  .hero-avatar {
-    width: 72px; height: 72px;
-    background: linear-gradient(135deg, #58a6ff, #bc8cff);
-    border-radius: 14px;
-    border: 3px solid var(--bg);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Lora', serif;
-    font-size: 1.8rem; color: white; font-style: italic;
-    position: relative; z-index: 1;
-    margin-bottom: 1rem;
-    box-shadow: 0 4px 24px rgba(88,166,255,0.3);
-  }
-
-  .hero-name {
-    font-family: 'Lora', serif;
-    font-size: 2.25rem; font-weight: 600;
-    letter-spacing: -0.02em; line-height: 1.1;
-    margin-bottom: 0.5rem;
-  }
-
-  .hero-tagline { font-size: 0.95rem; color: var(--muted); margin-bottom: 1.25rem; line-height: 1.6; max-width: 560px; }
-
-  .hero-chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.5rem; }
-
-  .chip {
-    display: inline-flex; align-items: center; gap: 0.35rem;
-    padding: 0.3rem 0.75rem;
-    background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 20px; font-size: 0.78rem; color: var(--muted);
-  }
-
-  .chip-dot { width: 5px; height: 5px; border-radius: 50%; }
-  .hero-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-
-  .hero-link {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.45rem 1rem; border-radius: 7px;
-    font-size: 0.8rem; font-weight: 500;
-    text-decoration: none; transition: all 0.15s;
-    border: 1px solid var(--border);
-  }
-
-  .hero-link-primary { background: var(--accent); color: #000; border-color: var(--accent); }
-  .hero-link-primary:hover { background: #79baff; }
-  .hero-link-secondary { background: var(--surface2); color: var(--text); }
-  .hero-link-secondary:hover { border-color: var(--accent); color: var(--accent); background: rgba(88,166,255,0.05); }
-
-  /* SECTIONS */
-  .section { margin-bottom: 3.5rem; }
-
-  .section-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.25rem; }
-  .section-icon { font-size: 1rem; }
-  .section-title { font-family: 'Lora', serif; font-size: 1.1rem; font-weight: 600; }
-  .section-divider { flex: 1; height: 1px; background: var(--border); }
-
-  .callout {
-    display: flex; align-items: flex-start; gap: 0.75rem;
-    background: rgba(88,166,255,0.06); border: 1px solid rgba(88,166,255,0.2);
-    border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 1.5rem;
-    font-size: 0.875rem; color: #8ec8ff; line-height: 1.6;
-  }
-
-  .callout-green { background: rgba(63,185,80,0.06); border-color: rgba(63,185,80,0.25); color: #7ce89a; }
-  .callout-icon { font-size: 1rem; flex-shrink: 0; padding-top: 0.1rem; }
-
-  /* EXP CARDS */
-  .exp-card {
-    border: 1px solid var(--border); border-radius: 10px;
-    overflow: hidden; margin-bottom: 0.75rem;
-    background: var(--card-bg); transition: border-color 0.2s;
-  }
-  .exp-toggle { display: none; }
-  .exp-card-body { padding: 0; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; }
-  .exp-toggle:checked ~ .exp-card-body { max-height: 1000px; padding: 0.25rem 1.5rem 1.25rem; }
-  .exp-toggle:checked ~ .exp-card-header .toggle-arrow { transform: rotate(90deg); }
-
-  .exp-card:hover { border-color: #444c56; }
-
-  .exp-card-header {
-    display: flex; align-items: flex-start;
-    justify-content: space-between; gap: 1rem;
-    padding: 1.25rem 1.5rem;
-    cursor: pointer; user-select: none; transition: background 0.15s;
-  }
-
-  .exp-card-header:hover { background: var(--surface2); }
-
-  .exp-org-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; }
-
-  .org-badge { font-size: 0.68rem; font-weight: 500; padding: 0.15rem 0.55rem; border-radius: 4px; }
-  .badge-blue { background: rgba(88,166,255,0.15); color: #58a6ff; }
-  .badge-green { background: rgba(63,185,80,0.12); color: #3fb950; }
-  .badge-orange { background: rgba(240,136,62,0.12); color: #f0883e; }
-  .badge-purple { background: rgba(188,140,255,0.12); color: #bc8cff; }
-
-  .exp-title-text { font-size: 0.925rem; font-weight: 500; color: var(--text); }
-  .exp-period { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--muted); white-space: nowrap; }
-
-  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 1rem; }
-
-  .exp-bullets li {
-    font-size: 0.865rem; color: #8b949e;
-    padding-left: 1.25rem; position: relative; line-height: 1.65;
-  }
-
-  .exp-bullets li::before { content: '–'; position: absolute; left: 0; color: var(--accent); font-size: 0.85rem; font-weight: 500; }
-
-  .more-info-btn {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    padding: 0.4rem 0.9rem;
-    background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25);
-    border-radius: 6px; font-size: 0.775rem; color: var(--accent);
-    cursor: pointer; transition: all 0.15s;
-    font-family: 'IBM Plex Sans', sans-serif;
-  }
-
-  .more-info-btn:hover { background: rgba(88,166,255,0.15); border-color: var(--accent); }
-
-  .toggle-arrow { font-size: 0.65rem; color: var(--muted); transition: transform 0.2s; flex-shrink: 0; display: inline-block; }
-
-
-  .exp-details { margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; }
-  .exp-details summary { cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.9rem; background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); border-radius: 6px; font-size: 0.775rem; color: var(--accent); font-family: 'IBM Plex Sans', sans-serif; }
-  .exp-details summary::-webkit-details-marker { display: none; }
-  .exp-details summary:hover { background: rgba(88,166,255,0.15); border-color: var(--accent); }
-  .exp-details[open] summary { margin-bottom: 1rem; }
-  .exp-details-body { font-size: 0.875rem; color: #8b949e; line-height: 1.8; }
-  .exp-details-body p { margin-bottom: 0.85rem; }
-  .exp-details-body p:last-child { margin-bottom: 0; }
-
-  /* PUBLICATIONS */
-  .pub-card {
-    display: flex; align-items: flex-start; gap: 1.25rem;
-    border: 1px solid var(--border); border-radius: 10px;
-    padding: 1.25rem 1.5rem; margin-bottom: 0.75rem;
-    background: var(--card-bg); transition: border-color 0.2s, background 0.15s;
-  }
-
-  .pub-card:hover { background: var(--card-hover); border-color: #444c56; }
-
-  .pub-num { font-family: 'Lora', serif; font-size: 1.5rem; color: var(--border); line-height: 1; flex-shrink: 0; width: 2rem; font-style: italic; }
-
-  .pub-venue-tag {
-    display: inline-block; font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase;
-    padding: 0.15rem 0.5rem; border-radius: 4px; margin-bottom: 0.4rem; font-weight: 500;
-  }
-
-  .venue-blue { background: rgba(88,166,255,0.12); color: #58a6ff; }
-  .venue-purple { background: rgba(188,140,255,0.12); color: #bc8cff; }
-  .venue-orange { background: rgba(240,136,62,0.12); color: #f0883e; }
-
-  .pub-title-text { font-size: 0.9rem; font-weight: 500; color: var(--text); line-height: 1.4; margin-bottom: 0.2rem; }
-  .pub-note { font-size: 0.78rem; color: var(--muted); }
-
-  /* PROJECTS */
-  .proj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-
-  .proj-card {
-    border: 1px solid var(--border); border-radius: 10px;
-    padding: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;
-    background: var(--card-bg); position: relative; overflow: hidden;
-    transition: border-color 0.2s, transform 0.15s, box-shadow 0.15s;
-  }
-
-  .proj-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-purple));
-    opacity: 0; transition: opacity 0.2s;
-  }
-
-  .proj-card:hover { border-color: #444c56; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
-  .proj-card:hover::before { opacity: 1; }
-
-  .proj-card-icon { font-size: 1.5rem; }
-  .proj-card-title { font-size: 0.925rem; font-weight: 500; color: var(--text); line-height: 1.3; }
-  .proj-card-desc { font-size: 0.825rem; color: var(--muted); line-height: 1.65; flex: 1; }
-  .proj-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-
-  .tag {
-    background: var(--surface2); border: 1px solid var(--border);
-    color: var(--muted); font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.62rem; padding: 0.2rem 0.5rem; border-radius: 4px;
-  }
-
-  .proj-link { font-size: 0.75rem; color: var(--accent); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 0.3rem; }
-  .proj-link:hover { text-decoration: underline; }
-
-  /* SKILLS */
-  .skills-table { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-
-  .skills-row {
-    display: grid; grid-template-columns: 200px 1fr;
-    border-bottom: 1px solid var(--border); transition: background 0.15s;
-  }
-
-  .skills-row:last-child { border-bottom: none; }
-  .skills-row:hover { background: var(--surface2); }
-
-  .skills-cat {
-    font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; font-weight: 500;
-    color: var(--muted); letter-spacing: 0.05em; padding: 0.9rem 1.25rem;
-    border-right: 1px solid var(--border); background: var(--surface);
-    display: flex; align-items: center; gap: 0.5rem;
-  }
-
-  .skills-pills { padding: 0.75rem 1.25rem; display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
-
-  .skill-pill {
-    background: var(--surface2); border: 1px solid var(--border);
-    color: #8b949e; font-size: 0.78rem; padding: 0.25rem 0.65rem;
-    border-radius: 5px; transition: border-color 0.15s, color 0.15s;
-  }
-
-  .skill-pill:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* EDUCATION */
-  .edu-card {
-    border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem;
-    margin-bottom: 0.75rem; display: grid; grid-template-columns: auto 1fr;
-    gap: 1.25rem; align-items: start; background: var(--card-bg); transition: border-color 0.2s;
-  }
-
-  .edu-card:hover { border-color: #444c56; }
-
-  .edu-logo { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
-  .edu-degree { font-size: 0.925rem; font-weight: 500; margin-bottom: 0.2rem; }
-  .edu-school { font-size: 0.825rem; color: var(--accent); font-weight: 500; margin-bottom: 0.2rem; }
-  .edu-meta { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-bottom: 0.6rem; }
-  .edu-courses { font-size: 0.8rem; color: var(--muted); line-height: 1.7; }
-
-  /* CONTACT */
-  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-
-  .contact-card {
-    display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem;
-    border: 1px solid var(--border); border-radius: 10px;
-    text-decoration: none; color: var(--text); background: var(--card-bg); transition: all 0.15s;
-  }
-
-  .contact-card:hover { border-color: var(--accent); background: rgba(88,166,255,0.05); transform: translateY(-1px); }
-
-  .contact-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; background: var(--surface2); }
-  .contact-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-bottom: 0.1rem; }
-  .contact-value { font-size: 0.825rem; font-weight: 500; }
-
-
-  /* ACHIEVEMENTS */
-  .achievements-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 3.5rem;
-  }
-
-  .ach-card {
-    background: var(--surface);
-    padding: 1.5rem 1.25rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.4rem;
-    transition: background 0.15s;
-  }
-
-  .ach-card:hover { background: var(--surface2); }
-
-  .ach-icon { font-size: 1.4rem; margin-bottom: 0.2rem; }
-
-  .ach-val {
-    font-family: 'Lora', serif;
-    font-size: 1.4rem;
-    font-weight: 600;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .ach-label {
-    font-size: 0.72rem;
-    color: var(--muted);
-    line-height: 1.4;
-  }
-
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-  .hero { animation: fadeUp 0.5s ease forwards; }
-  .section { animation: fadeUp 0.5s ease 0.1s both; }
-
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-
-  @media (max-width: 900px) {
-    .sidebar { display: none; }
-    .main { margin-left: 0; padding: 2rem 1.5rem; }
-    .proj-grid, .contact-grid { grid-template-columns: 1fr; }
-    .skills-row { grid-template-columns: 1fr; }
-    .skills-cat { border-right: none; border-bottom: 1px solid var(--border); }
-  }
+  .proj-grid { grid-template-columns:1fr; }
+  .skills-row { grid-template-columns:1fr; }
+}
 </style>
 </head>
+
 <body>
 
 <!-- SIDEBAR -->
+
 <aside class="sidebar">
-  <div class="sidebar-profile">
-    <div class="avatar">K</div>
-    <div class="sidebar-name">Khushang Zaveri</div>
-    <div class="sidebar-role">AI/ML Engineer · MS Data Science<br>Johns Hopkins University</div>
+
+<div class="sidebar-profile">
+  <div class="avatar">K</div>
+  <div class="sidebar-name">Khushang Zaveri</div>
+  <div class="sidebar-role">
+    AI Engineer · Athaca<br>
+    MS Data Science · Johns Hopkins
   </div>
-  <nav class="sidebar-nav">
-    <div class="nav-section-label">Overview</div>
-    <a href="#hero" class="nav-item"><span class="nav-icon">🏠</span> Home</a>
-    <div class="nav-section-label">Background</div>
-    <a href="#experience" class="nav-item"><span class="nav-icon">💼</span> Experience</a>
-    <a href="#publications" class="nav-item"><span class="nav-icon">📄</span> Publications</a>
-    <a href="#education" class="nav-item"><span class="nav-icon">🎓</span> Education</a>
-    <div class="nav-section-label">Work</div>
-    <a href="#projects" class="nav-item"><span class="nav-icon">🛠</span> Projects</a>
-    <a href="#skills" class="nav-item"><span class="nav-icon">⚡</span> Skills</a>
-    <div class="nav-section-label">Connect</div>
-    <a href="#contact" class="nav-item"><span class="nav-icon">✉️</span> Contact</a>
-  </nav>
+</div>
+
+<nav class="sidebar-nav">
+
+<div class="nav-section-label">Overview</div>
+<a href="#hero" class="nav-item">🏠 Home</a>
+
+<div class="nav-section-label">Background</div>
+<a href="#experience" class="nav-item">💼 Experience</a>
+
+<div class="nav-section-label">Work</div>
+<a href="#projects" class="nav-item">🛠 Projects</a>
+<a href="#skills" class="nav-item">⚡ Skills</a>
+
+</nav>
+
 </aside>
 
 <!-- MAIN -->
+
 <main class="main">
 
-  <div class="hero" id="hero">
-    <div class="hero-cover"><div class="cover-grid"></div></div>
-    <div style="padding-top:0.5rem">
-      <div class="hero-avatar">K</div>
-      <h1 class="hero-name">Khushang Zaveri</h1>
-      <p class="hero-tagline">AI/ML Engineer & Researcher · Building intelligent systems at the intersection of medical imaging, privacy-preserving ML, and generative models.</p>
-      <div class="hero-chips">
-        <span class="chip"><span class="chip-dot" style="background:#58a6ff"></span>Johns Hopkins CLSP</span>
-        <span class="chip"><span class="chip-dot" style="background:#3fb950"></span>St. Jude Children's Research Hospital</span>
-        <span class="chip"><span class="chip-dot" style="background:#f0883e"></span>NAACL 2025 · COLM 2025</span>
-      </div>
-      <div class="hero-links">
-        <span class="hero-link hero-link-primary" style="cursor:pointer;" id="hero-email-btn">✉ <span>kzaveri1</span><span>&#64;</span><span>jh.edu</span></span>
-        <a href="https://github.com/Khushangz" class="hero-link hero-link-secondary" target="_blank">⌥ GitHub</a>
-        <a href="https://www.linkedin.com/in/khushang-zaveri/" class="hero-link hero-link-secondary" target="_blank">in LinkedIn</a>
-        <a href="https://scholar.google.com/citations?hl=en&amp;user=_hAIF8EAAAAJ" class="hero-link hero-link-secondary" target="_blank">◎ Scholar</a>
-      </div>
-    </div>
-  </div>
+<!-- HERO -->
 
+<div class="hero" id="hero">
 
-  <!-- ACHIEVEMENTS -->
-  <div class="achievements-row">
-    <div class="ach-card">
-      <div class="ach-icon">📰</div>
-      <div class="ach-val">NAACL 2025</div>
-      <div class="ach-label">Main Conference · Top 15 NLP Venue</div>
-    </div>
-    <div class="ach-card">
-      <div class="ach-icon">🌍</div>
-      <div class="ach-val">Largest</div>
-      <div class="ach-label">Cross-cultural social norms cinema dataset</div>
-    </div>
-    <div class="ach-card">
-      <div class="ach-icon">🎙</div>
-      <div class="ach-val">First</div>
-      <div class="ach-label">End-to-end vocal tic detection system</div>
-    </div>
-    <div class="ach-card">
-      <div class="ach-icon">🔒</div>
-      <div class="ach-val">SOTA</div>
-      <div class="ach-label">Trained SOTA model exposing privacy risk in de-identified data</div>
-    </div>
-  </div>
+<div class="hero-cover"></div>
 
-  <!-- EXPERIENCE -->
-  <div class="section" id="experience">
-    <div class="section-header">
-      <span class="section-icon">💼</span>
-      <h2 class="section-title">Experience</h2>
-      <div class="section-divider"></div>
-    </div>
+<div style="padding-top:.5rem">
 
-    <div class="exp-card">
-      <input type="checkbox" class="exp-toggle" id="exp-1">
-      <label class="exp-card-header" for="exp-1" style="cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1.25rem 1.5rem;transition:background 0.15s;user-select:none;">
-        <div>
-          <div class="exp-org-row"><span class="org-badge badge-blue">Johns Hopkins · CLSP</span></div>
-          <div class="exp-title-text">Graduate Research Assistant</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:0.75rem">
-          <div class="exp-period">Aug 2025 – Present</div>
-          <svg class="toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </label>
-      <div class="exp-card-body">
-        <ul class="exp-bullets">
-          <li>Building first end-to-end vocal tic detection system using WavLM + CNN-BiLSTM with 105-frame receptive field for 2.1s temporal windows</li>
-          <li>Improved AUROC by 80% from baseline via JSD-optimized data splits, strategic undersampling, and temporal smoothing</li>
-          <li>Achieved 0.74 AUROC on patient-stratified intra- and inter-patient splits despite 98:2 class imbalance</li>
-          <li>Designed baseline experiments using SVM, VAD, MMD, LDA for interpretable tic-related signal analysis</li>
-        </ul>
-        <details class="exp-details">
-          <summary>◎ More info</summary>
-          <div class="exp-details-body">
-            <p>At Johns Hopkins University's Center for Language and Speech Processing, I am developing the first end-to-end vocal tic detection system using deep temporal modeling and speech embeddings in collaboration with clinical partners at Johns Hopkins Hospital.</p>
-            <p>The system processes raw audio into 20ms frame-level predictions, leveraging WavLM embeddings as input to a CNN-BiLSTM architecture with 12× temporal compression and 105-frame receptive field optimized for capturing tic patterns across 2.1-second windows.</p>
-            <p>I engineered a complete pipeline including preprocessing, segment alignment, padded sequence handling, and custom undersampling strategies to address severe class imbalance (98:2 non-tic to tic ratio). Through systematic experimentation with Jensen-Shannon divergence-optimized data splits, strategic undersampling, higher receptive field CNN architecture, and temporal smoothing, I improved AUROC by 80% from baseline approaches.</p>
-            <p>The model is trained and evaluated on patient-stratified intra- and inter-patient splits, achieving 0.74 AUROC despite operating at high temporal resolution with severe class imbalance. I also designed baseline experiments using SVM, VAD, MMD, and LDA to analyze tic-related signal transitions and dataset variance across patient splits.</p>
-          </div>
-        </details>
-      </div>
-    </div>
+<div class="hero-avatar">K</div>
 
-    <div class="exp-card">
-      <input type="checkbox" class="exp-toggle" id="exp-2">
-      <label class="exp-card-header" for="exp-2" style="cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1.25rem 1.5rem;transition:background 0.15s;user-select:none;">
-        <div>
-          <div class="exp-org-row"><span class="org-badge badge-green">St. Jude Children's Research Hospital</span></div>
-          <div class="exp-title-text">Software Engineer Intern · AI/ML</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:0.75rem">
-          <div class="exp-period">May 2025 – Present</div>
-          <svg class="toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </label>
-      <div class="exp-card-body">
-        <ul class="exp-bullets">
-          <li>Scaled FAISS-based retrieval to 600K+ chest X-rays; achieved SOTA 0.89 mAP@R and 0.9 P@1</li>
-          <li>Built contrastive copy-detection model + benchmarking framework for medical imaging privacy detection</li>
-          <li>Improved DenseNet-121 multi-label classification to 0.83 AUROC via FAISS-based deduplication across 14 diseases</li>
-          <li>Developed DDIM inversion pipeline (VAE, U-Net, null-text) to probe identity leakage in synthetic images</li>
-          <li>Performed white-box membership inference on chest X-ray LDMs using timestep-conditioned denoising loss</li>
-        </ul>
-        <details class="exp-details">
-          <summary>◎ More info</summary>
-          <div class="exp-details-body">
-            <p>At St. Jude Children's Research Hospital, my team and I developed a contrastive copy-detection model aimed at identifying potential privacy breaches in publicly released medical datasets. I lead the benchmarking of its retrieval and verification pipeline, ensuring reproducibility through consistent environments and data processing protocols.</p>
-            <p>This involves FAISS-based large-scale image retrieval, Siamese networks for patient verification, and logistic threshold-based decision functions. I've validated the model across 600,000+ chest X-ray images achieving SOTA 0.89 mAP@R and 0.9 precision@1 — significantly outperforming prior approaches.</p>
-            <p>In parallel, I'm training DenseNet-121 for multi-label thoracic pathology detection using FAISS-based deduplication across 14 diseases, achieving 0.83 AUROC. Another line of work involves DDIM-based latent diffusion inversion via null-text guidance for conditional reconstructions, generalizing to DDPM for stochastic generation, manipulating the latent space through VAE, U-Net, and noise schedulers for high-fidelity medical image reconstruction.</p>
-          </div>
-        </details>
-      </div>
-    </div>
+<h1 class="hero-name">
+Khushang Zaveri
+</h1>
 
-    <div class="exp-card">
-      <input type="checkbox" class="exp-toggle" id="exp-3">
-      <label class="exp-card-header" for="exp-3" style="cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1.25rem 1.5rem;transition:background 0.15s;user-select:none;">
-        <div>
-          <div class="exp-org-row"><span class="org-badge badge-purple">University of Pennsylvania</span></div>
-          <div class="exp-title-text">Research Intern · NLP</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:0.75rem">
-          <div class="exp-period">Jan 2023 – Jan 2024</div>
-          <svg class="toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </label>
-      <div class="exp-card-body">
-        <ul class="exp-bullets">
-          <li>Led creation of the largest cross-cultural dataset from 5,435 movie transcripts to identify harmful social norms</li>
-          <li>Engineered automated web crawler ETL pipeline (BeautifulSoup, SQL) to scrape and preprocess massive unstructured data</li>
-          <li>Applied LDA, LIWC, agglomerative clustering, and prompt engineering to uncover 10,000 harmful social norms</li>
-        </ul>
-      </div>
-    </div>
+<p class="hero-tagline">
+AI Engineer & Researcher · Building agentic systems, clinical AI,
+multimodal retrieval, and generative models for healthcare and life sciences.
+</p>
 
-    <div class="exp-card">
-      <input type="checkbox" class="exp-toggle" id="exp-4">
-      <label class="exp-card-header" for="exp-4" style="cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1.25rem 1.5rem;transition:background 0.15s;user-select:none;">
-        <div>
-          <div class="exp-org-row"><span class="org-badge badge-orange">Veltris</span></div>
-          <div class="exp-title-text">AI Intern</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:0.75rem">
-          <div class="exp-period">Jan 2024 – Jul 2024</div>
-          <svg class="toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </label>
-      <div class="exp-card-body">
-        <ul class="exp-bullets">
-          <li>Engineered Biomedical NER model; fine-tuned BERT & RoBERTa achieving 0.8 Macro F1</li>
-          <li>Mitigated severe class imbalance in biomedical datasets using synthetic data augmentation and batched oversampling</li>
-        </ul>
-      </div>
-    </div>
+<div class="hero-chips">
 
-    <div class="exp-card">
-      <input type="checkbox" class="exp-toggle" id="exp-5">
-      <label class="exp-card-header" for="exp-5" style="cursor:pointer;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1.25rem 1.5rem;transition:background 0.15s;user-select:none;">
-        <div>
-          <div class="exp-org-row"><span class="org-badge badge-blue">KPMG</span></div>
-          <div class="exp-title-text">AI Intern</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:0.75rem">
-          <div class="exp-period">Jun 2023 – Aug 2023</div>
-          <svg class="toggle-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="#7d8590" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-      </label>
-      <div class="exp-card-body">
-        <ul class="exp-bullets">
-          <li>Fine-tuned Flan-T5 and Falcon-7B as GEC models using PEFT to support auditor workflows</li>
-          <li>Researched BASEL IV impact on Indian banks; developed climate-resilient strategies using Monte Carlo simulation</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+<span class="chip">
+<span class="chip-dot" style="background:#bc8cff"></span>
+Athaca · AI Engineer
+</span>
 
-  <!-- PUBLICATIONS -->
-  <div class="section" id="publications">
-    <div class="section-header">
-      <span class="section-icon">📄</span>
-      <h2 class="section-title">Publications</h2>
-      <div class="section-divider"></div>
-    </div>
-    <div class="pub-card">
-      <div class="pub-num">01</div>
-      <div>
-        <div class="pub-venue-tag venue-blue">NAACL 2025 · Main Conference</div>
-        <div class="pub-title-text">Social Norms in Cinema: A Cross-Cultural Analysis of Shame and Pride</div>
-        <div class="pub-note">Top 15 NLP venue globally</div>
-      </div>
-    </div>
-    <div class="pub-card">
-      <div class="pub-num">02</div>
-      <div>
-        <div class="pub-venue-tag venue-purple">COLM 2025 · MELT Workshop</div>
-        <div class="pub-title-text">Social Norms in Cinema (Workshop Track)</div>
-        <div class="pub-note">Extended workshop presentation</div>
-      </div>
-    </div>
-    <div class="pub-card">
-      <div class="pub-num">03</div>
-      <div>
-        <div class="pub-venue-tag venue-orange">SIIM Conference · Abstract</div>
-        <div class="pub-title-text">Privacy Preservation in Publicly Available Medical Imaging Datasets</div>
-        <div class="pub-note">Medical imaging privacy research</div>
-      </div>
-    </div>
-    <div class="pub-card">
-  <div class="pub-num">04</div>
-  <div>
-    <div class="pub-venue-tag venue-purple">IC2S2 2025</div>
-    <div class="pub-title-text">Shame Across Cultures: Hollywood vs. Bollywood</div>
-    <div class="pub-note">Cross-cultural keyword analysis of shame expression in cinema</div>
-  </div>
+<span class="chip">
+<span class="chip-dot" style="background:#58a6ff"></span>
+Johns Hopkins CLSP
+</span>
+
+<span class="chip">
+<span class="chip-dot" style="background:#3fb950"></span>
+St. Jude Children's Research Hospital
+</span>
+
+<span class="chip">
+<span class="chip-dot" style="background:#f0883e"></span>
+NAACL 2025 · COLM 2025
+</span>
+
 </div>
-  </div>
 
-  <!-- PROJECTS -->
-  <div class="section" id="projects">
-    <div class="section-header">
-      <span class="section-icon">🛠</span>
-      <h2 class="section-title">Projects</h2>
-      <div class="section-divider"></div>
-    </div>
-    <div class="proj-grid">
+<div class="hero-links">
 
-      <div class="proj-card">
-        <div class="proj-card-icon">🔍</div>
-        <div class="proj-card-title">DevCode — Agentic Semantic Code Search</div>
-        <div class="proj-card-desc">End-to-end RAG system with intent-driven code discovery and LLM-based explanations. Tree-sitter AST parsing + Qdrant vector indexing for function-level retrieval across MONAI repositories.</div>
-        <div class="proj-tags"><span class="tag">FastAPI</span><span class="tag">LangGraph</span><span class="tag">Tree-sitter</span><span class="tag">Qdrant</span><span class="tag">Ollama</span></div>
-        <a href="https://github.com/Khushangz/devcode" class="proj-link" target="_blank">↗ GitHub</a>
-      </div>
+<a href="mailto:kzaveri1@jh.edu"
+class="hero-link hero-link-primary">
+✉ Email
+</a>
 
-      <div class="proj-card">
-        <div class="proj-card-icon">📚</div>
-        <div class="proj-card-title">RAG Multimodal Research Retrieval</div>
-        <div class="proj-card-desc">Multimodal RAG pipeline for scientific paper retrieval using LLaVA for image understanding. Improved mAP by 30% via hypothetical querying and LLM-as-a-judge evaluation.</div>
-        <div class="proj-tags"><span class="tag">FAISS</span><span class="tag">LLaVA</span><span class="tag">LangChain</span><span class="tag">Bedrock</span><span class="tag">BARTScore</span></div>
-        <a href="https://github.com/Khushangz" class="proj-link" target="_blank">↗ GitHub</a>
-      </div>
+<a href="https://github.com/Khushangz"
+class="hero-link hero-link-secondary"
+target="_blank">
+⌥ GitHub
+</a>
 
-      <div class="proj-card">
-        <div class="proj-card-icon">🤖</div>
-        <div class="proj-card-title">RLHF Training Pipeline</div>
-        <div class="proj-card-desc">Full SFT + DPO pipeline using GPT-2, Dolly-15K for supervised fine-tuning, and UltraFeedback for preference optimization. Custom token log-prob computation and gradient management.</div>
-        <div class="proj-tags"><span class="tag">PyTorch</span><span class="tag">TRL</span><span class="tag">DPO</span><span class="tag">GPT-2</span><span class="tag">PEFT</span></div>
-      </div>
+<a href="https://www.linkedin.com/in/khushang-zaveri/"
+class="hero-link hero-link-secondary"
+target="_blank">
+in LinkedIn
+</a>
 
-      <div class="proj-card">
-        <div class="proj-card-icon">🏔</div>
-        <div class="proj-card-title">VisionClassify — Scene Classification</div>
-        <div class="proj-card-desc">PyTorch CNN for classifying natural scenes (Buildings, Forest, Glacier, Mountain, Sea, Street) from the Intel Image Classification Challenge. Includes batch normalization, dropout, data augmentation, and checkpoint saving — achieving 90% test accuracy.</div>
-        <div class="proj-tags"><span class="tag">PyTorch</span><span class="tag">CNN</span><span class="tag">Torchvision</span><span class="tag">Adam</span><span class="tag">BatchNorm</span></div>
-        <a href="https://github.com/Khushangz/VisionClassify" class="proj-link" target="_blank">↗ GitHub</a>
-      </div>
+</div>
 
-      <div class="proj-card">
-        <div class="proj-card-icon">🩺</div>
-        <div class="proj-card-title">Medical Audio & SOAP Note Generation</div>
-        <div class="proj-card-desc">Whisper-based pipeline for audio denoising, transcription, and classification. Fine-tuned Flan-T5 for SOAP note section detection with integrated medical NER for clinical entity extraction — 0.9 macro F1.</div>
-        <div class="proj-tags"><span class="tag">Whisper</span><span class="tag">Flan-T5</span><span class="tag">Medical-NER</span><span class="tag">Pydub</span><span class="tag">Librosa</span></div>
-        <a href="https://github.com/Khushangz/Medical_Audio_and_SOAP_Note_Generation" class="proj-link" target="_blank">↗ GitHub</a>
-      </div>
+</div>
+</div>
 
-      <div class="proj-card">
-        <div class="proj-card-icon">🎬</div>
-        <div class="proj-card-title">CineBot — Multi-Agent Booking Assistant</div>
-        <div class="proj-card-desc">Multi-agent framework with intent-based routing, tool calling, and policy-driven state transitions for movie booking. Evaluation pipeline using synthetic dialogues to track tool-call accuracy via Swarm.</div>
-        <div class="proj-tags"><span class="tag">Swarm</span><span class="tag">Streamlit</span><span class="tag">Multi-agent</span><span class="tag">Tool calling</span></div>
-      </div>
+<!-- EXPERIENCE -->
 
-    </div>
-  </div>
+<div class="section" id="experience">
 
-  <!-- SKILLS -->
-  <div class="section" id="skills">
-    <div class="section-header">
-      <span class="section-icon">⚡</span>
-      <h2 class="section-title">Skills</h2>
-      <div class="section-divider"></div>
-    </div>
-    <div class="skills-table">
-      <div class="skills-row">
-        <div class="skills-cat">🐍 Languages</div>
-        <div class="skills-pills"><span class="skill-pill">Python</span><span class="skill-pill">SQL</span><span class="skill-pill">R</span><span class="skill-pill">C++</span><span class="skill-pill">C</span><span class="skill-pill">Java</span><span class="skill-pill">Bash</span></div>
-      </div>
-      <div class="skills-row">
-        <div class="skills-cat">👁 Computer Vision</div>
-        <div class="skills-pills"><span class="skill-pill">Stable Diffusion</span><span class="skill-pill">Image Classification</span><span class="skill-pill">Image Retrieval</span><span class="skill-pill">OpenCV</span><span class="skill-pill">Torchvision</span><span class="skill-pill">PIL</span><span class="skill-pill">Albumentations</span></div>
-      </div>
-      <div class="skills-row">
-        <div class="skills-cat">🧠 Machine Learning</div>
-        <div class="skills-pills"><span class="skill-pill">PyTorch</span><span class="skill-pill">TensorFlow</span><span class="skill-pill">Keras</span><span class="skill-pill">Scikit-learn</span><span class="skill-pill">Numpy</span><span class="skill-pill">Pandas</span><span class="skill-pill">SciPy</span><span class="skill-pill">DDP</span><span class="skill-pill">PEFT</span><span class="skill-pill">RLHF</span><span class="skill-pill">Fine-tuning</span><span class="skill-pill">CUDA/GPU</span></div>
-      </div>
-      <div class="skills-row">
-        <div class="skills-cat">🤖 Modelling</div>
-        <div class="skills-pills"><span class="skill-pill">Classification</span><span class="skill-pill">Regression</span><span class="skill-pill">Clustering</span><span class="skill-pill">Predictive Modelling</span><span class="skill-pill">PCA</span><span class="skill-pill">CNN</span><span class="skill-pill">RNN</span><span class="skill-pill">Neural Networks</span></div>
-      </div>
-      <div class="skills-row">
-        <div class="skills-cat">🔤 NLP & Transformers</div>
-        <div class="skills-pills"><span class="skill-pill">BERT</span><span class="skill-pill">Transformers</span><span class="skill-pill">Attention Mechanisms</span><span class="skill-pill">LLMs</span><span class="skill-pill">SLMs</span><span class="skill-pill">Self-Supervised Learning</span></div>
-      </div>
-      <div class="skills-row">
-        <div class="skills-cat">🎤 Speech & Audio AI</div>
-        <div class="skills-pills"><span class="skill-pill">ASR</span><span class="skill-pill">Speech Diarization</span><span class="skill-pill">VAD</span><span class="skill-pill">Temporal Modeling</span><span class="skill-pill">TTS/VC Synthesis</span><span class="skill-pill">WavLM</span><span class="skill-pill">HuBERT</span><span class="skill-pill">Wav2Vec 2.0</span><span class="skill-pill">Whisper</span><span class="skill-pill">Librosa</span><span class="skill-pill">Pydub</span></div>
-      </div>
-      <div class="skills-row">
-        <div class="skills-cat">🤝 Agentic & RAG</div>
-        <div class="skills-pills"><span class="skill-pill">RAG</span><span class="skill-pill">Multi-Agent Orchestration</span><span class="skill-pill">LangGraph</span><span class="skill-pill">LangChain</span><span class="skill-pill">Multimodal Retrieval</span><span class="skill-pill">Web Scraping</span><span class="skill-pill">FAISS</span><span class="skill-pill">Qdrant</span><span class="skill-pill">VectorDB</span></div>
-      </div>
-      <div class="skills-row">
-        <div class="skills-cat">⚙️ MLOps & Infra</div>
-        <div class="skills-pills"><span class="skill-pill">Docker</span><span class="skill-pill">FastAPI</span><span class="skill-pill">AWS</span><span class="skill-pill">PySpark</span><span class="skill-pill">Airflow</span><span class="skill-pill">CUDA</span><span class="skill-pill">GitHub</span><span class="skill-pill">Nginx</span><span class="skill-pill">PostgreSQL</span><span class="skill-pill">CI/CD</span><span class="skill-pill">Apache Spark</span><span class="skill-pill">Databricks</span><span class="skill-pill">BigQuery</span></div>
-      </div>
-      <div class="skills-row">
-        <div class="skills-cat">📊 Data & BI</div>
-        <div class="skills-pills"><span class="skill-pill">Power BI</span><span class="skill-pill">Tableau</span><span class="skill-pill">Hadoop</span><span class="skill-pill">Google BigQuery</span></div>
-      </div>
-    </div>
+<div class="section-header">
+<span>💼</span>
+<h2 class="section-title">Experience</h2>
+<div class="section-divider"></div>
+</div>
 
-  <!-- EDUCATION -->
-  <div class="section" id="education">
-    <div class="section-header">
-      <span class="section-icon">🎓</span>
-      <h2 class="section-title">Education</h2>
-      <div class="section-divider"></div>
-    </div>
-    <div class="edu-card">
-      <div class="edu-logo" style="background:rgba(88,166,255,0.12)">🎓</div>
-      <div>
-        <div class="edu-degree">MSE in Data Science</div>
-        <div class="edu-school">Johns Hopkins University</div>
-        <div class="edu-meta">Expected May 2026 · GPA 3.78 / 4.0</div>
-        <div class="edu-courses">NLP: Self-supervised Models · Machine Translation · Data Mining · Information Retrieval & Web Agents</div>
-      </div>
-    </div>
-    <div class="edu-card">
-      <div class="edu-logo" style="background:rgba(63,185,80,0.1)">🏫</div>
-      <div>
-        <div class="edu-degree">BTech in Computation & Mathematics</div>
-        <div class="edu-school">Mahindra University</div>
-        <div class="edu-meta">Aug 2020 – May 2024 · GPA 3.72 / 4.0</div>
-        <div class="edu-courses">Deep Learning · Advanced Linear Algebra · Databases · Probability & Statistics · Computer Vision</div>
-      </div>
-    </div>
-  </div>
 
-  <!-- CONTACT -->
-  <div class="section" id="contact">
-    <div class="section-header">
-      <span class="section-icon">✉️</span>
-      <h2 class="section-title">Contact</h2>
-      <div class="section-divider"></div>
-    </div>
-    <div class="contact-grid">
-      <span class="contact-card" style="cursor:pointer;" id="email-copy-card">
-        <div class="contact-icon">✉️</div>
-        <div><div class="contact-label">Email</div><div class="contact-value" id="email-display"><span>kzaveri1</span><span>&#64;</span><span>jh.edu</span></div></div>
-      </span>
-      <a href="https://github.com/Khushangz" class="contact-card" target="_blank">
-        <div class="contact-icon">⌥</div>
-        <div><div class="contact-label">GitHub</div><div class="contact-value">github.com/Khushangz</div></div>
-      </a>
-      <a href="https://www.linkedin.com/in/khushang-zaveri/" class="contact-card" target="_blank">
-        <div class="contact-icon">in</div>
-        <div><div class="contact-label">LinkedIn</div><div class="contact-value">linkedin.com/in/khushang-zaveri</div></div>
-      </a>
-      <a href="https://scholar.google.com/citations?hl=en&user=_hAIF8EAAAAJ" class="contact-card" target="_blank">
-        <div class="contact-icon">◎</div>
-        <div><div class="contact-label">Google Scholar</div><div class="contact-value">View publications</div></div>
-      </a>
-    </div>
-  </div>
+<!-- ATHACA -->
+
+<div class="exp-card">
+
+<input type="checkbox"
+class="exp-toggle"
+id="exp-athaca">
+
+<label class="exp-card-header"
+for="exp-athaca">
+
+<div>
+
+<div class="exp-org-row">
+<span class="org-badge badge-purple">
+Athaca
+</span>
+</div>
+
+<div class="exp-title-text">
+AI Engineer
+</div>
+
+</div>
+
+<div style="display:flex;align-items:center;gap:.75rem">
+
+<div class="exp-period">
+Sep 2026 – Present
+</div>
+
+<span class="toggle-arrow">▶</span>
+
+</div>
+
+</label>
+
+<div class="exp-card-body">
+
+<ul class="exp-bullets">
+
+<li>
+Developed agentic AI pipelines to extract, structure, and validate
+clinical eligibility criteria from AACT data for patient-finding workflows
+</li>
+
+<li>
+Building an AI-powered clinical trial platform for protocol criteria
+extraction, cross-trial benchmarking, and patient eligibility estimation
+</li>
+
+<li>
+Shipped an MCP server integrating Claude Code into internal workflows
+and developed RAG-based capabilities deployed into the core product
+</li>
+
+<li>
+Researching world-model approaches for generating synthetic patient twins
+for pharmaceutical use cases and simulation-driven analysis
+</li>
+
+</ul>
+
+<details class="exp-details">
+
+<summary>
+◎ More info
+</summary>
+
+<div class="exp-details-body">
+
+<p>
+At Athaca, I build applied AI systems for pharmaceutical and clinical-trial
+workflows, with a focus on turning complex protocol and trial data into
+structured, verifiable information that can support patient finding and
+eligibility assessment.
+</p>
+
+<p>
+My work includes developing agentic pipelines that extract and validate
+eligibility criteria from AACT and clinical trial protocols, combining
+LLM-based extraction with verification mechanisms to improve reliability.
+I also contribute to an AI-powered clinical trial platform supporting
+protocol intelligence, trial benchmarking, and patient eligibility estimation.
+</p>
+
+<p>
+On the AI infrastructure side, I shipped an MCP server integrating Claude
+Code into internal engineering workflows and developed RAG-based capabilities
+incorporated into the core product. I am also researching world models and
+synthetic patient twins for pharmaceutical applications and simulation-driven
+analysis.
+</p>
+
+</div>
+
+</details>
+
+</div>
+</div>
+
+
+<!-- JOHNS HOPKINS -->
+
+<div class="exp-card">
+
+<input type="checkbox"
+class="exp-toggle"
+id="exp-jhu">
+
+<label class="exp-card-header"
+for="exp-jhu">
+
+<div>
+
+<div class="exp-org-row">
+<span class="org-badge badge-blue">
+Johns Hopkins · CLSP
+</span>
+</div>
+
+<div class="exp-title-text">
+Graduate Research Assistant
+</div>
+
+</div>
+
+<div>
+
+<span class="exp-period">
+Aug 2025 – Present
+</span>
+
+</div>
+
+</label>
+
+<div class="exp-card-body">
+
+<ul class="exp-bullets">
+
+<li>
+Building first end-to-end vocal tic detection system using
+WavLM + CNN-BiLSTM with a 105-frame receptive field
+</li>
+
+<li>
+Improved AUROC by 80% from baseline through optimized
+data splits, undersampling and temporal modeling
+</li>
+
+<li>
+Developed patient-stratified evaluation pipelines
+for severe 98:2 class imbalance
+</li>
+
+<li>
+Designed SVM, VAD, MMD and LDA baselines for
+interpretable signal analysis
+</li>
+
+</ul>
+
+</div>
+</div>
+
+
+<!-- ST JUDE -->
+
+<div class="exp-card">
+
+<input type="checkbox"
+class="exp-toggle"
+id="exp-stjude">
+
+<label class="exp-card-header"
+for="exp-stjude">
+
+<div>
+
+<div class="exp-org-row">
+<span class="org-badge badge-green">
+St. Jude Children's Research Hospital
+</span>
+</div>
+
+<div class="exp-title-text">
+Software Engineer Intern · AI/ML
+</div>
+
+</div>
+
+<div class="exp-period">
+May 2025 – Present
+</div>
+
+</label>
+
+<div class="exp-card-body">
+
+<ul class="exp-bullets">
+
+<li>
+Scaled FAISS-based medical image retrieval across 600K+ chest X-rays,
+achieving 0.89 mAP@R and 0.90 Precision@1
+</li>
+
+<li>
+Built contrastive copy-detection and verification systems
+to expose privacy risks in publicly released medical datasets
+</li>
+
+<li>
+Improved DenseNet-121 multi-label classification to
+0.83 AUROC through FAISS-based deduplication
+</li>
+
+<li>
+Developed DDIM inversion pipelines to investigate
+identity leakage from generative medical imaging models
+</li>
+
+<li>
+Performed white-box membership inference attacks
+using timestep-conditioned diffusion losses
+</li>
+
+</ul>
+
+</div>
+</div>
+
+
+<!-- UPENN -->
+
+<div class="exp-card">
+
+<input type="checkbox"
+class="exp-toggle"
+id="exp-upenn">
+
+<label class="exp-card-header"
+for="exp-upenn">
+
+<div>
+
+<div class="exp-org-row">
+<span class="org-badge badge-purple">
+University of Pennsylvania
+</span>
+</div>
+
+<div class="exp-title-text">
+Research Intern · NLP
+</div>
+
+</div>
+
+<div class="exp-period">
+Jan 2023 – Jan 2024
+</div>
+
+</label>
+
+<div class="exp-card-body">
+
+<ul class="exp-bullets">
+
+<li>
+Led creation of the largest cross-cultural dataset from
+5,435 movie transcripts to identify harmful social norms
+</li>
+
+<li>
+Built automated web crawler and ETL pipelines
+for large-scale unstructured text
+</li>
+
+<li>
+Applied LDA, LIWC, clustering and prompt engineering
+to identify 10,000+ social norms
+</li>
+
+</ul>
+
+</div>
+</div>
+
+
+<!-- KPMG -->
+
+<div class="exp-card">
+
+<input type="checkbox"
+class="exp-toggle"
+id="exp-kpmg">
+
+<label class="exp-card-header"
+for="exp-kpmg">
+
+<div>
+
+<div class="exp-org-row">
+<span class="org-badge badge-blue">
+KPMG
+</span>
+</div>
+
+<div class="exp-title-text">
+AI Intern
+</div>
+
+</div>
+
+<div class="exp-period">
+Jun 2023 – Aug 2023
+</div>
+
+</label>
+
+<div class="exp-card-body">
+
+<ul class="exp-bullets">
+
+<li>
+Fine-tuned Flan-T5 and Falcon-7B using PEFT
+for grammatical error correction supporting auditor workflows
+</li>
+
+<li>
+Researched Basel IV impact on Indian banks
+and developed Monte Carlo-based climate risk strategies
+</li>
+
+</ul>
+
+</div>
+</div>
+
+</div>
+
+
+<!-- PROJECTS -->
+
+<div class="section" id="projects">
+
+<div class="section-header">
+<span>🛠</span>
+<h2 class="section-title">Projects</h2>
+<div class="section-divider"></div>
+</div>
+
+<div class="proj-grid">
+
+<div class="proj-card">
+
+<div class="proj-card-title">
+🔍 DevCode — Agentic Semantic Code Search
+</div>
+
+<div class="proj-card-desc">
+End-to-end agentic RAG system with intent-driven code discovery,
+Tree-sitter AST parsing and Qdrant vector retrieval.
+</div>
+
+<span class="tag">FastAPI</span>
+<span class="tag">LangGraph</span>
+<span class="tag">Qdrant</span>
+<span class="tag">RAG</span>
+
+</div>
+
+
+<div class="proj-card">
+
+<div class="proj-card-title">
+📚 Multimodal Research Retrieval
+</div>
+
+<div class="proj-card-desc">
+Multimodal RAG pipeline using LLaVA and FAISS for scientific paper
+retrieval, improving mAP by approximately 30%.
+</div>
+
+<span class="tag">FAISS</span>
+<span class="tag">LLaVA</span>
+<span class="tag">LangChain</span>
+<span class="tag">Bedrock</span>
+
+</div>
+
+
+<div class="proj-card">
+
+<div class="proj-card-title">
+🤖 RLHF Training Pipeline
+</div>
+
+<div class="proj-card-desc">
+Built an end-to-end SFT and DPO pipeline using GPT-2,
+Dolly-15K and UltraFeedback preference data.
+</div>
+
+<span class="tag">PyTorch</span>
+<span class="tag">DPO</span>
+<span class="tag">PEFT</span>
+<span class="tag">RLHF</span>
+
+</div>
+
+
+<div class="proj-card">
+
+<div class="proj-card-title">
+🩺 Medical Audio & SOAP Generation
+</div>
+
+<div class="proj-card-desc">
+Whisper-based medical audio pipeline with Flan-T5 SOAP note
+classification and biomedical entity extraction.
+</div>
+
+<span class="tag">Whisper</span>
+<span class="tag">Flan-T5</span>
+<span class="tag">Medical NER</span>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- SKILLS -->
+
+<div class="section" id="skills">
+
+<div class="section-header">
+<span>⚡</span>
+<h2 class="section-title">Skills</h2>
+<div class="section-divider"></div>
+</div>
+
+<div class="skills-table">
+
+
+<div class="skills-row">
+
+<div class="skills-cat">
+🤝 Agentic & RAG
+</div>
+
+<div class="skills-pills">
+
+<span class="skill-pill">Agentic AI</span>
+<span class="skill-pill">RAG</span>
+<span class="skill-pill">MCP / Model Context Protocol</span>
+<span class="skill-pill">Claude Code</span>
+<span class="skill-pill">Clinical AI</span>
+<span class="skill-pill">Multi-Agent Orchestration</span>
+<span class="skill-pill">LangGraph</span>
+<span class="skill-pill">LangChain</span>
+<span class="skill-pill">FAISS</span>
+<span class="skill-pill">Qdrant</span>
+<span class="skill-pill">VectorDB</span>
+
+</div>
+</div>
+
+
+<div class="skills-row">
+
+<div class="skills-cat">
+🧠 Machine Learning
+</div>
+
+<div class="skills-pills">
+
+<span class="skill-pill">PyTorch</span>
+<span class="skill-pill">TensorFlow</span>
+<span class="skill-pill">Scikit-learn</span>
+<span class="skill-pill">PEFT</span>
+<span class="skill-pill">RLHF</span>
+<span class="skill-pill">CUDA</span>
+<span class="skill-pill">Fine-tuning</span>
+
+</div>
+</div>
+
+
+<div class="skills-row">
+
+<div class="skills-cat">
+👁 Computer Vision
+</div>
+
+<div class="skills-pills">
+
+<span class="skill-pill">Stable Diffusion</span>
+<span class="skill-pill">Image Retrieval</span>
+<span class="skill-pill">Medical Imaging</span>
+<span class="skill-pill">OpenCV</span>
+<span class="skill-pill">Torchvision</span>
+
+</div>
+</div>
+
+
+<div class="skills-row">
+
+<div class="skills-cat">
+🔤 NLP & Transformers
+</div>
+
+<div class="skills-pills">
+
+<span class="skill-pill">BERT</span>
+<span class="skill-pill">Transformers</span>
+<span class="skill-pill">LLMs</span>
+<span class="skill-pill">Self-Supervised Learning</span>
+
+</div>
+</div>
+
+
+<div class="skills-row">
+
+<div class="skills-cat">
+⚙️ MLOps & Infra
+</div>
+
+<div class="skills-pills">
+
+<span class="skill-pill">Docker</span>
+<span class="skill-pill">FastAPI</span>
+<span class="skill-pill">AWS</span>
+<span class="skill-pill">PostgreSQL</span>
+<span class="skill-pill">CI/CD</span>
+<span class="skill-pill">GitHub</span>
+
+</div>
+</div>
+
+
+<div class="skills-row">
+
+<div class="skills-cat">
+🐍 Languages
+</div>
+
+<div class="skills-pills">
+
+<span class="skill-pill">Python</span>
+<span class="skill-pill">SQL</span>
+<span class="skill-pill">C++</span>
+<span class="skill-pill">Java</span>
+<span class="skill-pill">Bash</span>
+
+</div>
+</div>
+
+</div>
+</div>
+
+
+<!-- CONTACT -->
+
+<div class="section">
+
+<div class="section-header">
+<span>✉️</span>
+<h2 class="section-title">Contact</h2>
+<div class="section-divider"></div>
+</div>
+
+<p style="color:var(--muted)">
+Email:
+<a href="mailto:kzaveri1@jh.edu"
+style="color:var(--accent)">
+kzaveri1@jh.edu
+</a>
+</p>
+
+<p style="color:var(--muted)">
+GitHub:
+<a href="https://github.com/Khushangz"
+style="color:var(--accent)">
+github.com/Khushangz
+</a>
+</p>
+
+<p style="color:var(--muted)">
+LinkedIn:
+<a href="https://www.linkedin.com/in/khushang-zaveri/"
+style="color:var(--accent)">
+linkedin.com/in/khushang-zaveri
+</a>
+</p>
+
+</div>
 
 </main>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-document.addEventListener('DOMContentLoaded', function() {
-
-
-  });
-
-  // Prevent more-info buttons from closing cards
-  document.querySelectorAll('.more-info-btn').forEach(function(btn) {
-    btn.addEventListener('click', function(e) { e.stopPropagation(); });
-  });
-
-  // Nav highlight on scroll
-  window.addEventListener('scroll', function() {
-    var current = '';
-    document.querySelectorAll('[id]').forEach(function(s) {
-      if (window.scrollY >= s.offsetTop - 120) current = s.id;
-    });
-    document.querySelectorAll('.nav-item').forEach(function(item) {
-      item.classList.toggle('active', item.getAttribute('href') === '#' + current);
-    });
-  });
-
-});
-  function openModal(id) {
-  document.getElementById(id).classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-  document.body.style.overflow = ''
+</body>
+</html>
